@@ -1,0 +1,42 @@
+body {
+  /* Font and background colors */
+  background-color: black;
+  color: white;  
+}
+nav {
+  
+}
+header{
+  background: url(../../assets/Guest/light.png);
+  background-position: bottom;
+}
+.coloredButton {
+  /* Size Parameters */
+  height: 33%;
+  width: 8%;
+  /* Color */
+  background: radial-gradient(#0095FF 45%, #00FFCC 100%) ;
+  color: white;
+  font-size: medium;
+  text-shadow: 2px;
+  text-align: center;
+  /* Border Parameters */
+  border: 2px solid white;
+  border-radius:  60px;
+}
+
+button {
+  height: 33%;
+  width: 8%;
+  background: white;
+  color: black;
+  font-size: medium;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  border: 2px solid black;
+  border-radius:  60px;
+}
+
+@media (min-width: 1200px) {
+  
+}

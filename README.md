@@ -5,4 +5,5 @@ Web Development Course Project
 To Ensure compatible developing make sure to have same versions of the following:
 
 npx : 10.9.2
+
 node : 22.14.0
