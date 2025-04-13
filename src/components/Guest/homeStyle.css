@@ -3,9 +3,11 @@ body {
   background-color: black;
   color: white;  
 }
+
 nav {
   
 }
+
 header{
   background: url(../../assets/Guest/light.png);
   background-position: bottom;

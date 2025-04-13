@@ -1,0 +1,125 @@
+body {
+  /* Font and background colors */
+  background:url(../../assets/Guest/light.png);
+  background-size: cover;
+  color: white; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#logoCombined::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  height: 125%; /* Adjust line height */
+  width: 3px;
+  background: white;
+  opacity: 50%;
+}
+
+.inputField {
+  width: 500px;
+  height: 64px;
+  font-size: 24px;
+  color: white;
+  background-color: black;
+  border-radius: 60px;
+  border: 2px solid white;
+  margin-left: 10px;
+}
+
+a{
+  transform: translateX(5%);
+  margin-top: 25px;
+  color:white;
+}
+.formInput{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  margin-top: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  transform: translate(20%,30%);
+}
+
+#userIcon {
+  font-size: 50px;
+}
+
+#lockIcon {
+  font-size: 50px;
+}
+
+#box {
+  margin-top: 30px;
+  height: 800px;
+  width: 1400px;
+  background: black;
+  border-radius: 60px;
+  display: flex;
+  flex-direction: row;
+}
+
+#logo {
+  background: linear-gradient(60deg,#0095FF,#00FFCC);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 220px;
+}
+
+#logoName {
+  background: linear-gradient(60deg,#0095FF,#00FFCC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 90px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align:center;
+  width: 450px;
+  margin-top: -15px;
+}
+
+#logoCombined {
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  text-align: center;
+  transform: translateY(32%);
+}
+
+.coloredButton {
+  /* Size Parameters */
+  height: 33%;
+  width: 8%;
+  /* Color */
+  background: radial-gradient(#0095FF 45%, #00FFCC 100%) ;
+  color: white;
+  font-size: medium;
+  text-shadow: 2px;
+  text-align: center;
+  /* Border Parameters */
+  border: 2px solid white;
+  border-radius:  60px;
+}
+
+button {
+  height: 10%;
+  width: 60%;
+  background: white;
+  color: black;
+  font-size: 24px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  border-radius:  60px;
+  margin-top: 25px;
+  transform: translateX(35%);
+}
+
+@media (min-width: 1200px) {
+  
+}
