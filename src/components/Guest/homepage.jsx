@@ -1,8 +1,7 @@
-import './homeStyle.css';
+//import './homeStyle.css';
 function HomePage(){
     return(
         <div>
-            <title>Car Services</title>
             <nav>
 
             </nav>

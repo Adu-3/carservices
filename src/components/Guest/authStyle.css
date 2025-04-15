@@ -1,69 +1,85 @@
 body {
   /* Font and background colors */
-  background:url(../../assets/Guest/light.png);
+  background:url(../../assets/Guest/light.png) no-repeat center center fixed;
   background-size: cover;
+  min-height: 100vh;
   color: white; 
   display: flex;
   align-items: center;
   justify-content: center;
 }
-#logoCombined::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  height: 125%; /* Adjust line height */
-  width: 3px;
-  background: white;
-  opacity: 50%;
-}
-
 .inputField {
-  width: 500px;
-  height: 64px;
-  font-size: 24px;
+  width: 300px;
+  height: 80%;
+  font-size: medium;
+  font-weight: bold;
   color: white;
   background-color: black;
   border-radius: 60px;
+  border: 3px solid white;
+  padding-left: 5%;
+}
+#selection{
+  align-self: center;
   border: 2px solid white;
-  margin-left: 10px;
-  
-  padding-left: 30px;
+  margin-bottom: 10%;
+}
+#userInput{
+  margin-bottom: 15px;
 }
 
 a{
-  transform: translateX(5%);
-  margin-top: 25px;
+  margin-top: 6%;
+  margin-bottom: 5%;
   color:white;
 }
 .formInput{
   display: flex;
   flex-direction: row;
-  gap: 5px;
-  margin-top: 30px;
+  align-self: center;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  transform: translate(20%,30%);
+  align-self: center;
 }
 
-#userIcon {
-  font-size: 50px;
+#line {
+  width: 1px;
+  min-height: 500px;
+  background-color: white;
+  align-self: center;
+  opacity: 50%;
+  margin-top: -8%;
 }
+
+/* #userIcon {
+  font-size: 250%;
+} 
 
 #lockIcon {
-  font-size: 50px;
+  font-size: 200%;
+  padding-bottom: 3%;
+  padding-right: 2%;
+  margin-left: 2%;
+} */
+label {
+  margin-right: 2%;
+  margin-top: 1%;
 }
 
 #box {
-  margin-top: 30px;
-  height: 800px;
-  width: 1400px;
+  position: relative;
+  max-width: 1200px;
+  min-width: 800px;
+  min-height: 600px;
+  height: 1000%;
   background: black;
   border-radius: 60px;
   display: flex;
   flex-direction: row;
+  align-self: center;
 }
 
 #logo {
@@ -71,19 +87,21 @@ a{
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 220px;
+  font-size: 1200%;
+  align-self: center;
 }
 
 #logoName {
   background: linear-gradient(60deg,#0095FF,#00FFCC);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 90px;
+  font-size: 600%;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
   text-align:center;
-  width: 450px;
-  margin-top: -15px;
+  width: 90%;
+  margin-top: -1%;
+  align-self: center;
 }
 
 #logoCombined {
@@ -92,7 +110,7 @@ a{
   align-items: center; 
   justify-content: center; 
   text-align: center;
-  transform: translateY(32%);
+  align-self: center;
 }
 
 .coloredButton {
@@ -110,18 +128,54 @@ a{
   border-radius:  60px;
 }
 
-button {
-  height: 10%;
-  width: 60%;
+#loginButton {
+  min-width: 150px;
   background: white;
-  color: black;
-  font-size: 24px;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
   border-radius:  60px;
-  margin-top: 25px;
-  transform: translateX(35%);
+  align-self: center;
 }
 
-@media (min-width: 1200px) {
+button {
+  align-self: center;
+}
+
+/* Phone Sizes */
+@media (max-width: 500px) {
+  #line {
+    min-height: 1px;
+    width: 90%;
+    margin-bottom: 10%;
+    margin-top: 0%;
+  }
+  #selection {
+    margin-bottom: 10%;
+    max-width: 180px;
+    max-height: 180px;
+  }
+
+#box {
+    flex-direction: column;
+    padding: 30px;
+    min-width: 320px;
+    max-width: 400px;
+    min-height: 530px;
+    max-height: 900px;
+  }
+  #logo {
+    font-size: 400%;
+  }
+
+  #logoName {
+    font-size: 200%;
+    width: 100%;
+  }
+  #forgot{
+    align-self: center;
+  }
+
+  .formInput{
+    
+  }
   
 }
