@@ -8,7 +8,8 @@ body {
   align-items: center;
   justify-content: center;
 }
-.inputField {
+
+input {
   min-width: 300px;
   min-height: 40px;
   font-size: medium;
@@ -19,12 +20,15 @@ body {
   border: 2px solid white;
   padding-left: 5%;
 }
-#selection{
+
+.selection{
   align-self: center;
   border: 2px solid white;
   margin-bottom: 10%;
+  max-width: 80%;
 }
-#userInput{
+
+.userInput{
   margin-bottom: 15px;
 }
 
@@ -38,7 +42,9 @@ a{
   flex-direction: row;
   align-self: center;
 }
-
+.usernameInput{
+  margin-bottom: 5%;
+}
 .form {
   display: flex;
   flex-direction: column;
@@ -47,7 +53,7 @@ a{
   margin-left: 3%;
 }
 
-#line {
+.line {
   width: 1px;
   min-height: 500px;
   background-color: white;
@@ -55,24 +61,14 @@ a{
   opacity: 50%;
   align-self: center;
 }
-
-/* #userIcon {
-  font-size: 100%;
-} 
-
-#lockIcon {
-  font-size: 200%;
-  padding-bottom: 3%;
-  padding-right: 2%;
-  margin-left: 2%;
-}  */
+  
 label {
   font-size: 100%;
   margin-right: 2%;
-  margin-top: 1%;
+  margin-top: 2%;
 }
 
-#box {
+.box {
   position: relative;
   max-width: 1200px;
   min-width: 800px;
@@ -85,7 +81,7 @@ label {
   align-self: center;
 }
 
-#logo {
+.logo {
   background: linear-gradient(60deg,#0095FF,#00FFCC);
   -webkit-background-clip: text;
   background-clip: text;
@@ -94,7 +90,7 @@ label {
   align-self: center;
 }
 
-#logoName {
+.logoName {
   background: linear-gradient(60deg,#0095FF,#00FFCC);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -107,7 +103,7 @@ label {
   align-self: center;
 }
 
-#logoCombined {
+.logoCombined {
   display: flex; 
   flex-direction: column;
   align-items: center; 
@@ -116,22 +112,7 @@ label {
   align-self: center;
 }
 
-.coloredButton {
-  /* Size Parameters */
-  height: 33%;
-  width: 8%;
-  /* Color */
-  background: radial-gradient(#0095FF 45%, #00FFCC 100%) ;
-  color: white;
-  font-size: medium;
-  text-shadow: 2px;
-  text-align: center;
-  /* Border Parameters */
-  border: 2px solid white;
-  border-radius:  60px;
-}
-
-#loginButton {
+.loginButton {
   min-width: 150px;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
   border-radius:  60px;
@@ -144,19 +125,20 @@ button {
 
 /* Phone Sizes */
 @media (max-width: 500px) {
-  #line {
+  .line {
     min-height: 1px;
     width: 90%;
     margin-bottom: 10%;
     margin-top: 0%;
   }
-  #selection {
+  .selection {
     margin-bottom: 10%;
-    max-width: 180px;
+    max-width: 70%;
+    min-width: 50%;
     max-height: 180px;
   }
 
-#box {
+.box {
     flex-direction: column;
     padding: 30px;
     min-width: 320px;
@@ -164,15 +146,15 @@ button {
     min-height: 530px;
     max-height: 900px;
   }
-  #logo {
+  .logo {
     font-size: 400%;
   }
 
-  #logoName {
+  .logoName {
     font-size: 200%;
     width: 100%;
   }
-  #forgot{
+  a{
     align-self: center;
   }
   .inputField{

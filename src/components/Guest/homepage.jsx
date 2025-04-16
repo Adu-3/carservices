@@ -1,7 +1,9 @@
-//import './homeStyle.css';
+import styles from './homeStyle.module.css'
+
 function HomePage(){
     return(
         <div>
+            <style src></style>
             <nav>
 
             </nav>
