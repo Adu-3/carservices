@@ -1,0 +1,79 @@
+body {
+    background: url(../../assets/Guest/light.png) no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    color: white;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.payment-success-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.success-image {
+    max-width: 300px;
+    max-height: 300px;
+    object-fit: contain;
+    margin-bottom: 30px;
+}
+
+.success-message {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 20px 0 40px;
+    background: linear-gradient(60deg, #000000, #000000);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dashboard-button {
+    padding: 18px 40px;
+    background: linear-gradient(60deg, #0095FF, #00FFCC);
+    color: black;
+    border: none;
+    border-radius: 60px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 149, 255, 0.3);
+    min-width: 300px;
+}
+
+.dashboard-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 20px rgba(0, 255, 204, 0.4);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .payment-success-container {
+        padding: 20px;
+    }
+
+    .success-image {
+        max-width: 200px;
+        max-height: 200px;
+    }
+
+    .success-message {
+        font-size: 1.5rem;
+    }
+
+    .dashboard-button {
+        padding: 15px 30px;
+        font-size: 1rem;
+        min-width: 250px;
+    }
+}

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AddingMoney.css';
-import './formStyle.module.css'
 
 const testCards = [
   {
@@ -36,22 +35,18 @@ const AddingMoney = () => {
   const [balance, setBalance] = useState(100);
   const navigate = useNavigate();
 
-
-
   const handleAddMoney = (e) => {
     e.preventDefault();
-    
-    // Validate amount
     const amount = parseFloat(formData.amount);
+
     if (isNaN(amount) || amount <= 0) {
       setMessage('Please enter a valid amount');
       return;
     }
-    
-    // Combine month and year to match the test card format
+
     const expiry = `${formData.expiryMonth}/${formData.expiryYear}`;
-    
-    const matchedCard = testCards.find(card => 
+
+    const matchedCard = testCards.find(card =>
       card.number === formData.cardNumber &&
       card.name === formData.cardName &&
       card.expiry === expiry &&
@@ -68,25 +63,15 @@ const AddingMoney = () => {
       return;
     }
 
-    let newBalance = balance + amount;
+    const newBalance = balance + amount;
     setBalance(newBalance);
     localStorage.setItem('userBalance', newBalance.toString());
-
-    navigate('/payment-success'); // Redirect to the PaymentSuccess page
-
-    setFormData({
-      cardNumber: '',
-      cardName: '',
-      expiryMonth: '',
-      expiryYear: '',
-      cvv: '',
-      amount: ''
-    });
+    navigate('/payment-success');
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name === 'cardNumber') {
       const formattedValue = value
         .replace(/\s/g, '')
@@ -96,7 +81,7 @@ const AddingMoney = () => {
       setFormData(prev => ({ ...prev, [name]: formattedValue }));
       return;
     }
-    
+
     setFormData(prev => ({
       ...prev,
       [name]: value
