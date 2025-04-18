@@ -1,0 +1,174 @@
+body {
+  background: url(../../assets/Guest/light.png) no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.receipt-container {
+  font-family: 'Arial', sans-serif;
+  max-width: 800px;
+  min-width: 750px;
+  width: 800px;
+  margin: 20px auto;
+  padding: 40px;
+  border-radius: 60px;
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.receipt-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  background: linear-gradient(60deg, #0095FF, #00FFCC);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
+
+.items-list {
+  margin-bottom: 30px;
+}
+
+.item-card {
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+
+.item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 149, 255, 0.2);
+  border-color: rgba(0, 255, 204, 0.4);
+}
+
+.item-card.selected {
+  border: 3px solid #5500f3;
+  background: rgba(85, 0, 243, 0.1);
+}
+
+.item-card.paid {
+  background: rgba(71, 163, 83, 0.2);
+  border-color: #47a353;
+}
+
+.price {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 15px;
+  color: #00FFCC;
+}
+
+.paid-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(60deg, #0095FF, #00FFCC);
+  color: black;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.payment-section {
+  padding: 25px;
+  background: rgba(0, 149, 255, 0.1);
+  border-radius: 20px;
+  border: 2px solid rgba(0, 255, 204, 0.2);
+  margin-bottom: 20px;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(60deg, #0095FF, #00FFCC);
+  color: black;
+  border: none;
+  border-radius: 60px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 149, 255, 0.3);
+}
+
+.pay-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 20px rgba(0, 255, 204, 0.4);
+}
+
+.pay-button:disabled {
+  background: rgba(149, 165, 166, 0.5);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.message {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.message.success {
+  background: rgba(212, 237, 218, 0.2);
+  color: #d4edda;
+  border: 2px solid #47a353;
+}
+
+.message.error {
+  background: rgba(248, 215, 218, 0.2);
+  color: #f8d7da;
+  border: 2px solid #e74c3c;
+}
+
+.selected-item-info {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(0, 149, 255, 0.1);
+  border-radius: 15px;
+  border: 2px solid rgba(0, 255, 204, 0.2);
+  color: white;
+}
+
+/* Phone Sizes */
+@media (max-width: 768px) {
+  .receipt-container {
+    min-width: 90%;
+    max-width: 95%;
+    padding: 30px;
+  }
+
+  .receipt-title {
+    font-size: 1.8rem;
+  }
+
+  .item-card {
+    padding: 15px;
+  }
+
+  .pay-button {
+    padding: 15px;
+    font-size: 1rem;
+  }
+}
