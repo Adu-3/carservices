@@ -1,5 +1,6 @@
 import styles from './sendEmailStyle.module.css';
 import { useState } from 'react';
+import AdminHeader from './AdminHeader';
 
 const dummyUsers = [
   { id: 1, name: 'Abdullah Alghamdi', email: 'abdullah@example.com' },
@@ -12,9 +13,10 @@ function AdminSendEmailPage() {
   const [message, setMessage] = useState('');
 
   return (
-    <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
+    <>
+      <AdminHeader active="Service Providers" />    <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
       <div className={styles.logoCombined} style={{ marginBottom: '30px' }}>
-        <span className={`material-icons ${styles.logo}`}>email</span>
+        <span className={`material-icons ${styles.logo}`} style={{ fontSize: '100px' }}>email</span>
         <p className={styles.logoName}>Send Email</p>
       </div>
 
@@ -66,6 +68,7 @@ function AdminSendEmailPage() {
         )}
       </div>
     </div>
+    </>
   );
 }
 

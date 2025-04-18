@@ -1,5 +1,6 @@
 import styles from './createServiceProviderStyle.module.css';
 import { useState } from 'react';
+import AdminHeader from './AdminHeader';
 
 function AdminCreateServiceProvider() {
   const [form, setForm] = useState({
@@ -38,9 +39,11 @@ function AdminCreateServiceProvider() {
   
 
   return (
-    <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
+    <>
+      <AdminHeader active="Service Providers" />
+      <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
       <div className={styles.logoCombined} style={{ marginBottom: '30px' }}>
-        <span className={`material-icons ${styles.logo}`}>business</span>
+        <span className={`material-icons ${styles.logo}`} style={{ fontSize: '100px' }}>business</span>
         <p className={styles.logoName}>Create Service Provider</p>
       </div>
 
@@ -98,6 +101,7 @@ function AdminCreateServiceProvider() {
         )}
       </div>
     </div>
+    </>
   );
 }
 

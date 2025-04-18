@@ -1,5 +1,6 @@
 import styles from './formStyle.module.css';
 import { useState } from 'react';
+import AdminHeader from './AdminHeader';
 
 const dummyForms = [
   {
@@ -44,9 +45,11 @@ function AdminFormsPage() {
   const [selectedForm, setSelectedForm] = useState(null);
 
   return (
-    <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
+    <>
+      <AdminHeader active="Service Providers" />    
+      <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
       <div className={styles.logoCombined} style={{ marginBottom: '30px' }}>
-        <span className={`material-icons ${styles.logo}`}>description</span>
+        <span className={`material-icons ${styles.logo}`} style={{ fontSize: '100px' }}>description</span>
         <p className={styles.logoName}>Form Responses</p>
       </div>
 
@@ -85,6 +88,7 @@ function AdminFormsPage() {
         )}
       </div>
     </div>
+    </>
   );
 }
 
