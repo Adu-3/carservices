@@ -34,7 +34,7 @@ function AuthenticationPage(){
                             </label>
                             <input id="password" type="password" placeholder="Password" required></input>
                     </div>
-                    <a href="https://google.com">Forgot your password ?</a>
+                    <a href="https://google.com" className="text-white ">Forgot your password ?</a>
                     <button id="loginButton"className={`bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-full cursor-pointer ${styles.loginButton}`}> 
                     Login</button>
                 </div>

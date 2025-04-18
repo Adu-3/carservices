@@ -32,11 +32,6 @@ input {
   margin-bottom: 15px;
 }
 
-a{
-  margin-top: 6%;
-  margin-bottom: 5%;
-  color:white;
-}
 .formInput{
   display: flex;
   flex-direction: row;
@@ -94,11 +89,11 @@ label {
   background: linear-gradient(60deg,#0095FF,#00FFCC);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 600%;
+  font-size: 500%;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
   text-align:center;
-  width: 90%;
+  min-width: 70%;
   margin-top: -1%;
   align-self: center;
 }
