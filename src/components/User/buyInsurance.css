@@ -1,0 +1,339 @@
+/* تأمين فقط - لا يؤثر على صفحات أخرى */
+.insurance-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.insurance-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.insurance-header h1 {
+  font-size: 26px;
+  color: var(--secondary);
+}
+
+.insurance-home-btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #8dfff625;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+  border: none;
+  color: #3498db;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+.insurance-home-btn:hover {
+  background: #00756bab;
+}
+
+.insurance-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 35px;
+  font-size: 16px;
+  color: #7f8c8d;
+}
+
+.insurance-step.active {
+  color: #3498db;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.insurance-separator {
+  color: #9ca0a39d;
+  font-size: 16px;
+}
+
+.insurance-step-content {
+  background: rgba(30, 41, 59, 0.7);
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.1);
+}
+
+.insurance-step-content h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #4188ce;
+  text-align: center;
+}
+
+.insurance-nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.insurance-nav h2 {
+  font-size: 22px;
+  color: #4188ce;
+}
+
+.insurance-back-btn {
+  background: #8dfff628;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border: none;
+  color: #3498db;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.insurance-back-btn:hover {
+  background: #00756bab;
+}
+
+.insurance-vehicles {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.insurance-vehicle {
+  border: 1px solid #b6b6b6;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.insurance-vehicle.selected {
+  border-color: #0099ff;
+  background-color: #002a4e65;
+  transform: scale(1.05);
+}
+
+.insurance-vehicle h3 {
+  font-size: 18px;
+  color: var(--secondary);
+  margin-bottom: 10px;
+}
+
+.insurance-vehicle-details {
+  display: flex;
+  gap: 15px;
+  font-size: 16px;
+  color: #7f8c8d;
+}
+
+.insurance-selected-vehicle {
+  background-color: #00d8c61c;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.insurance-selected-vehicle h3 {
+  font-size: 16px;
+  color: var(--secondary);
+  margin-bottom: 5px;
+}
+
+.insurance-selected-vehicle p {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+.insurance-plans {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.insurance-plan {
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.insurance-plan.selected {
+  border-color: #0099ff;
+  background-color: #002a4e65;
+  transform: scale(1.05);
+}
+
+.insurance-plan-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.insurance-plan-header h4 {
+  font-size: 18px;
+  color: #009ccc;
+}
+
+.insurance-plan-price {
+  color: #3498db;
+  font-weight: bold;
+}
+
+.insurance-plan-coverage {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+.insurance-summary {
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.insurance-summary h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #3498db;
+}
+
+.insurance-summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.insurance-summary-row.total {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #ecf0f1;
+  font-weight: bold;
+}
+
+.insurance-summary-price {
+  color: #3498db;
+}
+
+.insurance-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.insurance-next-btn, .insurance-confirm-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.insurance-next-btn {
+  background: #4188ce;
+  color: white;
+}
+
+.insurance-confirm-btn {
+  background: #2ecc71;
+  color: white;
+}
+
+.insurance-processing {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 45, 71, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.insurance-spinner {
+  border: 4px solid rgba(0,0,0,0.1);
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+.insurance-success {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 45, 71, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.insurance-success-icon {
+  color: #2ecc71;
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.insurance-error {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(231, 76, 60, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1001;
+  animation: fadeInOut 3s forwards;
+}
+.negative-balance {
+  color: red;
+}
+.positive-balance {
+  color: green;
+}
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .insurance-container {
+    padding: 15px;
+  }
+
+  .insurance-header h1 {
+    font-size: 22px;
+  }
+
+  .insurance-progress {
+    font-size: 14px;
+  }
+
+  .insurance-vehicle, .insurance-plan {
+    padding: 15px;
+  }
+
+  .insurance-next-btn, .insurance-confirm-btn {
+    width: 100%;
+  }
+}
