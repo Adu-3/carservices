@@ -1,6 +1,7 @@
 import styles from './InsuredVehiclesList.module.css';
 import { useState } from 'react';
 
+
 const initialPolicies = [
   {
     policyNo: '1/11/866209/2025',
@@ -60,9 +61,10 @@ function InsuredVehiclesList() {
   };
 
   return (
-    <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
+    <>
+      <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
       <div className={styles.logoCombined} style={{ marginBottom: '30px' }}>
-        <span className={`material-icons ${styles.logo}`}>shield</span>
+        <span className={`material-icons ${styles.logo}`} style={{ fontSize: '100px' }}>shield</span>
         <p className={styles.logoName}>Insured Vehicles</p>
       </div>
 
@@ -108,6 +110,7 @@ function InsuredVehiclesList() {
         ))}
       </div>
     </div>
+    </>
   );
 }
 

@@ -19,6 +19,8 @@ body {
     flex-direction: column; /* changed from row */
     align-self: center;
     padding: 30px;
+    margin-top: 75px;
+
   }
   
   .logo {
