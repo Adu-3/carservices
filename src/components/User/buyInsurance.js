@@ -68,7 +68,6 @@ function InsurancePage({ balance, setBalance }) {
       return;
     }
 
-    // تحقق إضافي من الرصيد حتى لو كان الزر معطلاً
     if (balance < selectedPlan.price) {
       setPaymentError('Insufficient balance to purchase this plan');
       setTimeout(() => setPaymentError(''), 3000);

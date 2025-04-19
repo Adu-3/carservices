@@ -18,7 +18,6 @@ function TrafficViolationsPage({ balance, setBalance }) {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentError, setPaymentError] = useState('');
 
-  // تحميل البيانات من localStorage عند بداية التشغيل
   useEffect(() => {
     const storedViolations = localStorage.getItem('violations');
     if (storedViolations) {
@@ -28,7 +27,6 @@ function TrafficViolationsPage({ balance, setBalance }) {
     }
   }, []);
 
-  // دالة لتحديث البيانات في localStorage
   const updateLocalStorage = (newViolations) => {
     localStorage.setItem('violations', JSON.stringify(newViolations));
   };
@@ -66,7 +64,7 @@ function TrafficViolationsPage({ balance, setBalance }) {
           selectedViolations.includes(v.id) ? { ...v, paid: true } : v
         );
         setViolations(updatedViolations);
-        updateLocalStorage(updatedViolations); // تحديث التخزين
+        updateLocalStorage(updatedViolations); 
         setSelectedViolations([]);
         setIsProcessing(false);
         setPaymentSuccess(true);
@@ -81,14 +79,11 @@ function TrafficViolationsPage({ balance, setBalance }) {
     }
   };
 
-  // ترتيب المخالفات حسب تاريخ المخالفة (الأحدث في الأعلى)
   const sortedViolations = violations.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  // ترتيب المخالفات غير المدفوعة أولاً ثم المدفوعة
   const unpaidViolations = sortedViolations.filter(v => !v.paid);
   const paidViolations = sortedViolations.filter(v => v.paid);
 
-  // دمج المخالفات المدفوعة وغير المدفوعة بعد الترتيب
   const allViolations = [...unpaidViolations, ...paidViolations];
 
   const totalAmount = allViolations
