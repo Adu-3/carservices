@@ -8,6 +8,8 @@ import Parking from './components/User/Parking';
 import Tolls from './components/User/tolls';
 import InsurancePage from './components/User/buyInsurance';
 import TrafficViolationsPage from './components/User/trafficViolations';
+import AuthenticationPage from './components/Guest/authentication';
+import UserHomePage from './components/User/UserHomePage';
 
 function User() {
   return (
@@ -15,14 +17,14 @@ function User() {
       <UserHeader />
 
       <Routes>
-        <Route path="/" element={<div>Welcome to User Home</div>} /> // change later fr
+        <Route path="/" element={<UserHomePage/>} /> // change later fr
         <Route path="/insurance" element={<InsurancePage />} />
         <Route path="/cars" element={<CarRegistration />} />
         <Route path="/tolls" element={<Tolls />} />
         <Route path="/violations" element={<TrafficViolationsPage />} />
         <Route path="/parking" element={<Parking />} />
         <Route path="/wallet" element={<AddingMoney />} />
-        <Route path="/profile" element={<div>Welcome to User Profile</div>} />  // change later fr
+        <Route path="/profile" element={<AuthenticationPage/>} />
       </Routes>
     </Router>
   );
