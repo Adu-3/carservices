@@ -1,0 +1,138 @@
+body {
+    background: url(../../assets/Guest/light.png) no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .box {
+    position: relative;
+    max-width: 1200px;
+    min-width: 800px;
+    min-height: 600px;
+    background: black;
+    border-radius: 60px;
+    display: flex;
+    flex-direction: column; /* changed from row */
+    align-self: center;
+    padding: 30px;
+  }
+  
+  .logo {
+    background: linear-gradient(60deg, #0095FF, #00FFCC);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1200%;
+    align-self: center;
+  }
+  
+  .logoName {
+    background: linear-gradient(60deg, #0095FF, #00FFCC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 600%;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    width: 90%;
+    margin-top: -1%;
+    align-self: center;
+  }
+  
+  .logoCombined {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    align-self: center;
+    margin-bottom: 30px;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    margin-right: 5%;
+    margin-left: 3%;
+    width: 100%;
+  }
+  
+  .formInput {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+  }
+  
+  .usernameInput {
+    margin-bottom: 5%;
+  }
+  
+  /* Reusable button base */
+  button {
+    align-self: center;
+    font-weight: bold;
+    border-radius: 60px;
+    cursor: pointer;
+    padding: 10px 24px;
+    white-space: nowrap;
+    text-align: center;
+    min-width: fit-content;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Specific buttons */
+  .infoButton {
+    background-color: white;
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .backButton {
+    background-color: white;
+    color: black;
+    margin-top: 20px;
+  }
+  
+  /* Form entry display */
+  .formCard {
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 10px;
+  }
+  
+  .questionBlock {
+    margin-bottom: 15px;
+  }
+  
+  /* Phone Sizes */
+  @media (max-width: 500px) {
+    .box {
+      flex-direction: column;
+      padding: 30px;
+      min-width: 320px;
+      max-width: 400px;
+      min-height: 530px;
+      max-height: 900px;
+    }
+  
+    .logo {
+      font-size: 400%;
+    }
+  
+    .logoName {
+      font-size: 200%;
+      width: 100%;
+    }
+  
+    .infoButton,
+    .backButton {
+      width: 100%;
+    }
+  }
+  
