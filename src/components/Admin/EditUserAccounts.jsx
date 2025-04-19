@@ -1,4 +1,4 @@
-import styles from './formStyle.module.css';
+import styles from './EditUserAccountsStyle.module.css';
 import { useState } from 'react';
 
 const initialUsers = [
@@ -47,7 +47,7 @@ const initialUsers = [
   },
 ];
 
-function AdminFormsPage() {
+function EditUserAccounts() {
   const [users, setUsers] = useState(initialUsers);
   const [editingUserId, setEditingUserId] = useState(null);
   const [editedUser, setEditedUser] = useState({ name: '', email: '', age: '' });
@@ -307,4 +307,4 @@ function AdminFormsPage() {
   );
 }
 
-export default AdminFormsPage;
+export default EditUserAccounts;
