@@ -44,6 +44,26 @@ npm start
 
 Visit on your browser: localhost:3000
 
+# 💻 Usage instructions and examples
+
+After adding the desired user type to App.js
+
+- **Admin**
+- Users page: allows you to view and edit user details
+- Service Providers page: allows you to create new service providers
+- Forms page: allows you to view forms sent by users
+
+- **User**
+- Insurance page: allows you to buy insurance for your registered vehicles
+- Cars page: allows you to register vehicles under your account
+- Tolls page: allows you to pay tolls
+- Violations page: allows you to pay your violations
+- Parking page: allows you to pay for parking
+
+- **Guest**
+- See the home page and login or register a new account
+
+
 # 👨‍💻 Team member names and roles
 
 - **Mohammed Alghanem**: Leader
