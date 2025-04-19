@@ -16,7 +16,7 @@ function Admin() {
           <AdminHeader />
           
       <Routes>
-        <Route path="/" element={<div>Welcome to Admin Home</div>} />
+        <Route path="/" element={<div>Welcome to Admin Home</div>} /> // change later fr
         <Route path="/users" element={<><AdminHeader active="Users" /><EditUserAccounts /></>} />
         <Route path="/service-providers" element={<><AdminHeader active="Service Providers" /><AdminCreateServiceProvider /></>} />
         <Route path="/forms" element={<><AdminHeader active="Forms" /><AdminFormsPage /></>} />

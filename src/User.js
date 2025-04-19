@@ -15,14 +15,14 @@ function User() {
       <UserHeader />
 
       <Routes>
-        <Route path="/" element={<div>Welcome to User Home</div>} />
+        <Route path="/" element={<div>Welcome to User Home</div>} /> // change later fr
         <Route path="/insurance" element={<InsurancePage />} />
         <Route path="/cars" element={<CarRegistration />} />
         <Route path="/tolls" element={<Tolls />} />
         <Route path="/violations" element={<TrafficViolationsPage />} />
         <Route path="/parking" element={<Parking />} />
         <Route path="/wallet" element={<AddingMoney />} />
-        {/* Add more routes like /insurance, /violations when their components are ready */}
+        <Route path="/profile" element={<div>Welcome to User Profile</div>} />  // change later fr
       </Routes>
     </Router>
   );
