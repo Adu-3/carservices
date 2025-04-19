@@ -1,16 +1,13 @@
+import TopBar from "./TopBar";
+
 function HomePage(){
     return(
-        <div>
-            <nav className={"bg-white border-gray-200 dark:bg-gray-900"}>
-                <div className="">
-                    <span className="" >directions_car</span>
-                     <p className="">Car Services</p>
-                </div>
-            </nav>
-
-            <body>
-
-            </body>
+    <div>
+        <TopBar/>
+        <body className="bg-black">
+            <div className="bg-url['(../../assets/Guest/light.png)']">
+            </div>
+        </body>
     </div>
     )
 }
