@@ -119,9 +119,6 @@ function TrafficViolationsPage({ balance, setBalance }) {
       )}
 
       <header className="insurance-header">
-        <button className="insurance-home-btn" onClick={() => navigate('/')}>
-          Home
-        </button>
         <h1>Traffic Violations Payments</h1>
       </header>
 

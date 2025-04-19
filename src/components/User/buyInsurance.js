@@ -106,9 +106,6 @@ function InsurancePage({ balance, setBalance }) {
   return (
     <div className="insurance-container">
       <header className="insurance-header">
-        <button className="insurance-home-btn" onClick={() => navigate('/')}>
-          Home
-        </button>
         <h1>Vehicle Insurance Purchase</h1>
       </header>
 
