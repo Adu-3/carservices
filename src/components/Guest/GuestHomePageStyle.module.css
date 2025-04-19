@@ -1,0 +1,163 @@
+.body {
+  /* Font and background colors */
+  background: url(../../assets/Guest/light.png) no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  color: white; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  min-width: 300px;
+  min-height: 40px;
+  font-size: medium;
+  font-weight: bold;
+  color: white;
+  background-color: black;
+  border-radius: 60px;
+  border: 2px solid white;
+  padding-left: 5%;
+  margin-top: 5%;
+}
+
+.selection{
+  align-self: center;
+  border: 2px solid white;
+  margin-bottom: 5%;
+  max-width: 80%;
+}
+
+.userInput{
+  margin-bottom: 15px;
+}
+
+.formInput{
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin-right: 5%;
+  margin-left: 3%;
+}
+
+.line {
+  width: 1px;
+  min-height: 500px;
+  background-color: white;
+  align-self: center;
+  opacity: 50%;
+  align-self: center;
+}
+  
+.label {
+  font-size: 100%;
+  margin-right: 2%;
+  margin-top: 2%;
+}
+
+.box {
+  position: relative;
+  max-width: 900px;
+  min-width: 800px;
+  min-height: 600px;
+  height: 1000%;
+  background: black;
+  border-radius: 60px;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+}
+
+.logo {
+  background: linear-gradient(60deg,#0095FF,#00FFCC);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 600%;
+  align-self: center;
+}
+
+.logoName {
+  background: linear-gradient(60deg,#0095FF,#00FFCC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 500%;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  white-space: nowrap;         /* ⬅️ prevents word wrapping */
+  margin-top: -1%;
+  align-self: center;
+}
+
+
+.logoCombined {
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  text-align: center;
+  align-self: center;
+}
+
+.loginButton {
+  min-width: 150px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  border-radius:  60px;
+  align-self: center;
+}
+
+.button {
+  align-self: center;
+}
+
+.icon{
+  margin-top: 75%;
+  margin-right: 6px;
+}
+
+/* Phone Sizes */
+@media (max-width: 500px) {
+  .line {
+    min-height: 1px;
+    width: 90%;
+    margin-bottom: 10%;
+    margin-top: 0%;
+  }
+
+  .selection {
+    margin-bottom: 10%;
+    max-width: 70%;
+    min-width: 50%;
+    max-height: 180px;
+  }
+
+.box {
+    flex-direction: column;
+    padding: 30px;
+    min-width: 320px;
+    max-width: 400px;
+    min-height: 530px;
+    max-height: 900px;
+  }
+
+  .logo {
+    font-size: 350%;
+  }
+
+  .logoName {
+    font-size: 200%;
+    width: 100%;
+  }
+
+  .inputField{
+    min-height: 30px;
+  }
+}
