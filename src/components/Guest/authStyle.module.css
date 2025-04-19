@@ -1,6 +1,6 @@
-body {
+.body {
   /* Font and background colors */
-  background:url(../../assets/Guest/light.png) no-repeat center center fixed;
+  background: url(../../assets/Guest/light.png) no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
   color: white; 
@@ -9,7 +9,7 @@ body {
   justify-content: center;
 }
 
-input {
+.input {
   min-width: 300px;
   min-height: 40px;
   font-size: medium;
@@ -19,12 +19,13 @@ input {
   border-radius: 60px;
   border: 2px solid white;
   padding-left: 5%;
+  margin-top: 5%;
 }
 
 .selection{
   align-self: center;
   border: 2px solid white;
-  margin-bottom: 10%;
+  margin-bottom: 5%;
   max-width: 80%;
 }
 
@@ -37,9 +38,7 @@ input {
   flex-direction: row;
   align-self: center;
 }
-.usernameInput{
-  margin-bottom: 5%;
-}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -57,7 +56,7 @@ input {
   align-self: center;
 }
   
-label {
+.label {
   font-size: 100%;
   margin-right: 2%;
   margin-top: 2%;
@@ -65,7 +64,7 @@ label {
 
 .box {
   position: relative;
-  max-width: 1200px;
+  max-width: 900px;
   min-width: 800px;
   min-height: 600px;
   height: 1000%;
@@ -81,7 +80,7 @@ label {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 1200%;
+  font-size: 600%;
   align-self: center;
 }
 
@@ -96,6 +95,7 @@ label {
   min-width: 70%;
   margin-top: -1%;
   align-self: center;
+  max-width: 90%;
 }
 
 .logoCombined {
@@ -114,8 +114,13 @@ label {
   align-self: center;
 }
 
-button {
+.button {
   align-self: center;
+}
+
+.icon{
+  margin-top: 75%;
+  margin-right: 6px;
 }
 
 /* Phone Sizes */
@@ -126,6 +131,7 @@ button {
     margin-bottom: 10%;
     margin-top: 0%;
   }
+
   .selection {
     margin-bottom: 10%;
     max-width: 70%;
@@ -141,17 +147,16 @@ button {
     min-height: 530px;
     max-height: 900px;
   }
+
   .logo {
-    font-size: 400%;
+    font-size: 350%;
   }
 
   .logoName {
     font-size: 200%;
     width: 100%;
   }
-  a{
-    align-self: center;
-  }
+
   .inputField{
     min-height: 30px;
   }
