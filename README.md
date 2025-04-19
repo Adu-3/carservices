@@ -43,3 +43,12 @@ npm start
 4. **Open in Browser**
 
 Visit on your browser: localhost:3000
+
+# 👨‍💻 Team member names and roles
+
+- **Mohammed Alghanem**: Leader
+- **Alridha Al Maden**: Member
+- **Asad Aldubaisi**: Member
+- **Abdulaziz Alfaraj**: Member
+- **Ali Almatar**: Member
+- **Sajjad Arafat**: Member
