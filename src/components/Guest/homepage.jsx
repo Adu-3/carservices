@@ -3,7 +3,6 @@ import light from '../../assets/Guest/light.png';
 import shield from '../../assets/Guest/shield.png';
 import traffic from '../../assets/Guest/traffic.png';
 import tolls from '../../assets/Guest/tolls.png';
-import TopBar from './TopBar';
 
 function HomePage() {
   return (
