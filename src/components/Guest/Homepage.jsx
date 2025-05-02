@@ -8,7 +8,7 @@ import TopBar from './TopBar';
 function HomePage() {
   return (
     <div>
-      <TopBar />
+      <TopBar/>
       <div className="flex flex-col bg-black w-screen min-h-screen">
         {/* Hero Section */}
         <div

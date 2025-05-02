@@ -1,66 +1,31 @@
 import styles from './authStyle.module.css';
 import 'material-icons/iconfont/material-icons.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // for navigation
 
-function AuthenticationPage() {
+function AuthenticationPage({ onLogin }) {
     const [activeBtn, setActiveBtn] = useState('login');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate(); // Used for redirection after login
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setError('');
-
+    // Handle login logic
+    const handleLogin = async () => {
         try {
-            const response = await fetch('http://localhost:5000/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
+            const credentials = { username, password };
+            const response = await axios.post('http://localhost:5000/api/user/login', credentials);
+            
+            // Save the token to localStorage and update App.js state via onLogin
+            localStorage.setItem('authToken', response.data.token);
+            onLogin(response.data.token); // Pass the token back to App.js
 
-            const data = await response.json();
-
-            if (!response.ok) throw new Error(data.message || 'Login failed');
-
-            localStorage.setItem('token', data.token);
-            navigate('/main');
-        } catch (err) {
-            setError(err.message);
-        }
-    };
-
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        setError('');
-
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
-
-        try {
-            const response = await fetch('http://localhost:5001/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Registration failed');
-            }
-
-            alert('Registration successful! You can now log in.');
-            setUsername('');
-            setPassword('');
-            setConfirmPassword('');
-            setActiveBtn('login');
-        } catch (err) {
-            setError(err.message);
+            // After successful login, redirect to the dashboard
+            navigate('/dashboard'); // Redirect to dashboard
+        } catch (error) {
+            setErrorMessage('Invalid username or password');
+            console.error('Login failed:', error);
         }
     };
 
@@ -75,98 +40,74 @@ function AuthenticationPage() {
                 <span className={styles.line}></span>
 
                 <div className={styles.form}>
+                    {/* Login/Signup Switch */}
                     <div className={`flex rounded-full w-full ${styles.selection}`}>
                         <button
-                            className="flex-1 py-2 rounded-full cursor-pointer"
+                            className="flex-1 py-2 rounded-full antialiased subpixel-antialiased cursor-pointer"
                             style={activeBtn === 'login' ? { background: 'radial-gradient(at center, #0095FF 40%, #00FFCC 95%)' } : {}}
                             onClick={() => setActiveBtn('login')}
                         >Login</button>
                         <button
-                            className="flex-1 py-2 rounded-full cursor-pointer"
+                            className="flex-1 py-2 rounded-full antialiased subpixel-antialiased cursor-pointer"
                             style={activeBtn === 'signup' ? { background: 'radial-gradient(at center, #0095FF 40%, #00FFCC 95%)' } : {}}
                             onClick={() => setActiveBtn('signup')}
                         >Signup</button>
                     </div>
 
-                    <form onSubmit={activeBtn === 'login' ? handleLogin : handleRegister}>
-                        <div className={styles.formInput}>
-                            <label htmlFor="username">
-                                <span className={`material-icons ${styles.icon}`}>person</span>
-                            </label>
-                            <input
-                                id="username"
-                                className={`${styles.usernameInput} ${styles.input}`}
-                                type="text"
-                                placeholder="Username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                required
-                            />
-                        </div>
+                    {/* Username */}
+                    <div className={styles.formInput}>
+                        <label htmlFor="username">
+                            <span className={`material-icons ${styles.icon}`}>person</span>
+                        </label>
+                        <input
+                            id="username"
+                            className={`${styles.usernameInput} ${styles.input}`}
+                            type="text"
+                            placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)} // Capture username
+                            required
+                        />
+                    </div>
 
-                        {activeBtn === 'signup' && (
-                            <div className={styles.formInput}>
-                                <label htmlFor="email">
-                                    <span className={`material-icons ${styles.icon}`}>mail</span>
-                                </label>
-                                <input
-                                    id="email"
-                                    className={styles.input}
-                                    type="email"
-                                    placeholder="Email (optional)"
-                                />
-                            </div>
-                        )}
+                    {/* Password */}
+                    <div className={styles.formInput}>
+                        <label htmlFor="password">
+                            <span className={`input-icon material-icons ${styles.icon}`}>lock</span>
+                        </label>
+                        <input
+                            id="password"
+                            className={styles.input}
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)} // Capture password
+                            required
+                        />
+                    </div>
 
-                        <div className={styles.formInput}>
-                            <label htmlFor="password">
-                                <span className={`material-icons ${styles.icon}`}>lock</span>
-                            </label>
-                            <input
-                                id="password"
-                                className={styles.input}
-                                type="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
+                    {/* Error message */}
+                    {errorMessage && <div className="error-message" style={{ color: 'red' }}>{errorMessage}</div>}
 
-                        {activeBtn === 'signup' && (
-                            <div className={styles.formInput}>
-                                <label htmlFor="confirmPassword">
-                                    <span className={`material-icons ${styles.icon}`}>lock</span>
-                                </label>
-                                <input
-                                    id="confirmPassword"
-                                    className={styles.input}
-                                    type="password"
-                                    placeholder="Confirm Password"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        )}
-
-                        {error && <p className={styles.error}>{error}</p>}
-
-                        {activeBtn === 'login' && (
-                            <a href="#" className="text-white self-center mt-2 mb-2">Forgot your password?</a>
-                        )}
-
-                        <button
-                            type="submit"
-                            className={`bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-full cursor-pointer ${styles.loginButton} mt-4`}
-                        >
-                            {activeBtn === 'login' ? 'Login' : 'Create Account'}
+                    {/* Login or Signup Button */}
+                    {activeBtn === 'login' ? (
+                        <>
+                            <a href="https://google.com" className="text-white self-center mt-2 mb-2">Forgot your password?</a>
+                            <button 
+                                className={`bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-full cursor-pointer ${styles.loginButton}`}
+                                onClick={handleLogin} // Trigger the login function
+                            >
+                                Login
+                            </button>
+                        </>
+                    ) : (
+                        <button className={`bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-full cursor-pointer ${styles.loginButton} mt-6`}>
+                            Create Account
                         </button>
-                    </form>
+                    )}
                 </div>
             </div>
         </div>
     );
 }
-
 export default AuthenticationPage;
