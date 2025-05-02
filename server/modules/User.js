@@ -17,10 +17,7 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Toll'
   }],
-  Vehicle: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Vehicle"
-  }]
+  Vehicle: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" }]
 });
 
 module.exports = mongoose.model('User', userSchema);
