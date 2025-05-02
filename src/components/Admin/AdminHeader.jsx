@@ -18,6 +18,9 @@ const AdminHeader = () => {
         <NavLink to="/forms" className={({ isActive }) => (isActive ? 'active' : '')}>
           Forms
         </NavLink>
+        <NavLink to="/send-email" className={({ isActive }) => (isActive ? 'active' : '')}>
+          Mail
+        </NavLink>
       </nav>
 
       <div className="admin-icons">
