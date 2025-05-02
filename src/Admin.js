@@ -8,9 +8,11 @@ import AdminCreateServiceProvider from './components/Admin/AdminCreateServicePro
 import AdminFormsPage from './components/Admin/AdminFormsPage';
 import AdminSendEmailPage from './components/Admin/AdminSendEmailPage';
 import InsuredVehiclesList from './components/Admin/InsuredVehiclesList';
-import HomePage from './components/Guest/homepage';
 import AuthenticationPage from './components/Guest/authentication';
+import Login from './components/Guest/Login';
+import Register from './components/Guest/Register';
 import AdminHomePage from './components/Admin/AdminHomePage';
+import HomePageA from './components/Admin/HomePageA';
 
 
 function Admin() {
@@ -19,13 +21,14 @@ function Admin() {
           <AdminHeader />
           
       <Routes>
-        <Route path="/" element={<AdminHomePage/>} /> // change later fr
+        <Route path="/" element={<HomePageA/>} /> // change later fr
         <Route path="/users" element={<><AdminHeader active="Users" /><EditUserAccounts /></>} />
         <Route path="/service-providers" element={<><AdminHeader active="Service Providers" /><AdminCreateServiceProvider /></>} />
         <Route path="/forms" element={<><AdminHeader active="Forms" /><AdminFormsPage /></>} />
         <Route path="/send-email" element={<><AdminHeader active="" /><AdminSendEmailPage /></>} />
         <Route path="/insured-vehicles" element={<><AdminHeader active="" /><InsuredVehiclesList /></>} />
-        <Route path="/profile" element={<AuthenticationPage/>} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/register" element={<Register/>} />
 
       </Routes>
     </Router>

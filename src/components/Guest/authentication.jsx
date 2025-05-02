@@ -1,9 +1,68 @@
 import styles from './authStyle.module.css';
 import 'material-icons/iconfont/material-icons.css';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function AuthenticationPage() {
     const [activeBtn, setActiveBtn] = useState('login');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError('');
+
+        try {
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) throw new Error(data.message || 'Login failed');
+
+            localStorage.setItem('token', data.token);
+            navigate('/main');
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setError('');
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:5001/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Registration failed');
+            }
+
+            alert('Registration successful! You can now log in.');
+            setUsername('');
+            setPassword('');
+            setConfirmPassword('');
+            setActiveBtn('login');
+        } catch (err) {
+            setError(err.message);
+        }
+    };
 
     return (
         <div className={styles.body}>
@@ -16,93 +75,94 @@ function AuthenticationPage() {
                 <span className={styles.line}></span>
 
                 <div className={styles.form}>
-                    {/* Login/Signup Switch */}
                     <div className={`flex rounded-full w-full ${styles.selection}`}>
                         <button
-                            className="flex-1 py-2 rounded-full antialiased subpixel-antialiased cursor-pointer"
+                            className="flex-1 py-2 rounded-full cursor-pointer"
                             style={activeBtn === 'login' ? { background: 'radial-gradient(at center, #0095FF 40%, #00FFCC 95%)' } : {}}
                             onClick={() => setActiveBtn('login')}
                         >Login</button>
                         <button
-                            className="flex-1 py-2 rounded-full antialiased subpixel-antialiased cursor-pointer"
+                            className="flex-1 py-2 rounded-full cursor-pointer"
                             style={activeBtn === 'signup' ? { background: 'radial-gradient(at center, #0095FF 40%, #00FFCC 95%)' } : {}}
                             onClick={() => setActiveBtn('signup')}
                         >Signup</button>
                     </div>
 
-                    {/* Username */}
-                    <div className={styles.formInput}>
-                        <label htmlFor="username">
-                            <span className={`material-icons ${styles.icon}`}>person</span>
-                        </label>
-                        <input
-                            id="username"
-                            className={`${styles.usernameInput} ${styles.input}`}
-                            type="text"
-                            placeholder="Username"
-                            required
-                        />
-                    </div>
-
-                    {/* Email (only for signup) */}
-                    {activeBtn === 'signup' && (
+                    <form onSubmit={activeBtn === 'login' ? handleLogin : handleRegister}>
                         <div className={styles.formInput}>
-                            <label htmlFor="email">
-                                <span className={`input-icon material-icons ${styles.icon}`}>mail</span>
+                            <label htmlFor="username">
+                                <span className={`material-icons ${styles.icon}`}>person</span>
                             </label>
                             <input
-                                id="email"
-                                className={styles.input}
-                                type="email"
-                                placeholder="Email"
+                                id="username"
+                                className={`${styles.usernameInput} ${styles.input}`}
+                                type="text"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
                         </div>
-                    )}
 
-                    {/* Password */}
-                    <div className={styles.formInput}>
-                        <label htmlFor="password">
-                            <span className={`input-icon material-icons ${styles.icon}`}>lock</span>
-                        </label>
-                        <input
-                            id="password"
-                            className={styles.input}
-                            type="password"
-                            placeholder="Password"
-                            required
-                        />
-                    </div>
+                        {activeBtn === 'signup' && (
+                            <div className={styles.formInput}>
+                                <label htmlFor="email">
+                                    <span className={`material-icons ${styles.icon}`}>mail</span>
+                                </label>
+                                <input
+                                    id="email"
+                                    className={styles.input}
+                                    type="email"
+                                    placeholder="Email (optional)"
+                                />
+                            </div>
+                        )}
 
-                    {/* Confirm Password (only for signup) */}
-                    {activeBtn === 'signup' && (
                         <div className={styles.formInput}>
-                            <label htmlFor="confirmPassword">
-                                <span className={`input-icon material-icons ${styles.icon}`}>lock</span>
+                            <label htmlFor="password">
+                                <span className={`material-icons ${styles.icon}`}>lock</span>
                             </label>
                             <input
-                                id="confirmPassword"
+                                id="password"
                                 className={styles.input}
                                 type="password"
-                                placeholder="Confirm Password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                         </div>
-                    )}
 
-                    {/* Login or Signup Button */}
-                    {activeBtn === 'login' ? (
-                        <>
-                            <a href="https://google.com" className="text-white self-center mt-2 mb-2">Forgot your password?</a>
-                            <button className={`bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-full cursor-pointer ${styles.loginButton}`}>
-                                Login
-                            </button>
-                        </>
-                    ) : (
-                        <button className={`bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-full cursor-pointer ${styles.loginButton} mt-6`}>
-                            Create Account
+                        {activeBtn === 'signup' && (
+                            <div className={styles.formInput}>
+                                <label htmlFor="confirmPassword">
+                                    <span className={`material-icons ${styles.icon}`}>lock</span>
+                                </label>
+                                <input
+                                    id="confirmPassword"
+                                    className={styles.input}
+                                    type="password"
+                                    placeholder="Confirm Password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        )}
+
+                        {error && <p className={styles.error}>{error}</p>}
+
+                        {activeBtn === 'login' && (
+                            <a href="#" className="text-white self-center mt-2 mb-2">Forgot your password?</a>
+                        )}
+
+                        <button
+                            type="submit"
+                            className={`bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-full cursor-pointer ${styles.loginButton} mt-4`}
+                        >
+                            {activeBtn === 'login' ? 'Login' : 'Create Account'}
                         </button>
-                    )}
+                    </form>
                 </div>
             </div>
         </div>

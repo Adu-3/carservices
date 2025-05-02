@@ -10,6 +10,7 @@ import InsurancePage from './components/User/buyInsurance';
 import TrafficViolationsPage from './components/User/trafficViolations';
 import AuthenticationPage from './components/Guest/authentication';
 import UserHomePage from './components/User/UserHomePage';
+import HomePage from './components/User/HomePageU';
 
 function User() {
   return (
@@ -17,7 +18,7 @@ function User() {
       <UserHeader />
 
       <Routes>
-        <Route path="/" element={<UserHomePage/>} /> // change later fr
+        <Route path="/" element={<HomePage/>} /> // change later fr
         <Route path="/insurance" element={<InsurancePage />} />
         <Route path="/cars" element={<CarRegistration />} />
         <Route path="/tolls" element={<Tolls />} />

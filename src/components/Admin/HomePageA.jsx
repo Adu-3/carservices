@@ -1,11 +1,7 @@
 import path from '../../assets/Guest/path.png';
 import light from '../../assets/Guest/light.png';
-import shield from '../../assets/Guest/shield.png';
-import traffic from '../../assets/Guest/traffic.png';
-import tolls from '../../assets/Guest/tolls.png';
-import TopBar from './TopBar';
 
-function HomePage() {
+function HomePageA() {
   return (
     <div>
       <div className="flex flex-col bg-black w-screen min-h-screen">
@@ -29,19 +25,6 @@ function HomePage() {
             <p className="text-white text-4xl md:text-7xl font-bold mt-4 md:mt-5 text-center md:text-left">
               Where Ever You Go
             </p>
-            <div className="mt-6 flex flex-col md:flex-row gap-4 items-center md:items-start">
-              <button
-                className="text-white font-bold rounded-full border-2 text-lg md:text-xl text-center py-3 px-6"
-                style={{
-                  background: 'radial-gradient(at center, #0095FF 40%, #00FFCC 95%)',
-                }}
-              >
-                Create Account
-              </button>
-              <button className="bg-black text-white font-bold rounded-full border-2 text-lg md:text-xl text-center py-3 px-6">
-                Login
-              </button>
-            </div>
           </div>
         </div>
 
@@ -59,26 +42,41 @@ function HomePage() {
             className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl self-center w-full"
           >
             <div className="border border-white rounded-3xl p-6 flex flex-col items-center text-center bg-black">
-              <img src={shield} alt="Insurance Guarantee" className="h-20 mb-4" />
-              <p className="text-white text-2xl font-bold">Protect Your Car</p>
+              <span className="material-icons" style={{ fontSize: '4rem', 
+                background: 'linear-gradient(to top left, #00FFCC, #0095FF)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent' }}>person
+              </span>
+              <br></br>
+              <p className="text-white text-2xl font-bold">Manage Users & Vehicles</p>
               <p className="mt-4 text-gray-300">
-                Ensure your car with multiple options from insurance companies in different countries.
+              View, edit, and manage all users and their registered cars.
               </p>
             </div>
 
             <div className="border border-white rounded-3xl p-6 flex flex-col items-center text-center bg-black">
-              <img src={traffic} alt="Settle Violations" className="h-20 mb-4" />
-              <p className="text-white text-2xl font-bold">Settle Your Violations</p>
+            <span className="material-icons" style={{ fontSize: '4rem', 
+                background: 'linear-gradient(to top left, #00FFCC, #0095FF)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent' }}>check
+              </span>
+              <br></br>
+              <p className="text-white text-2xl font-bold">Create Service Providers</p>
               <p className="mt-4 text-gray-300">
-                Resolve traffic violations quickly and securely, with support from various local and international authorities.
+              Add or manage service providers like insurance companies and toll companies.
               </p>
             </div>
 
             <div className="border border-white rounded-3xl p-6 flex flex-col items-center text-center bg-black">
-              <img src={tolls} alt="Pay Tolls" className="h-20 mb-4" />
-              <p className="text-white text-2xl font-bold">Pay Tolls</p>
+            <span className="material-icons" style={{ fontSize: '4rem', 
+                background: 'linear-gradient(to top left, #00FFCC, #0095FF)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent' }}>note
+              </span>
+              <br></br>
+              <p className="text-white text-2xl font-bold">View User Forms</p>
               <p className="mt-4 text-gray-300">
-                Easily manage and pay toll charges across different regions with seamless payment options.
+              Access and review forms submitted by users to ensure best user experience.
               </p>
             </div>
           </div>
@@ -88,4 +86,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default HomePageA;

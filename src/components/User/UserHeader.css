@@ -4,7 +4,8 @@
     left: 0;
     right: 0;
     width: 100vw;
-    background: linear-gradient(to right, #002b5c82, #00797384);
+    height: 65px;
+    background: black;
     display: flex;
     justify-content: space-between;
     align-items: center;
