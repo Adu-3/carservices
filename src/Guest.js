@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GuestHeader from './components/Guest/GuestHeader';
 import AuthenticationPage from './components/Guest/authentication';
 import GuestHomePage from './components/Guest/GuestHomePage';
-import HomePage from './components/Guest/Homepage';
+import HomePage from './components/Guest/homepage';
 
 function Guest() {
   return (
