@@ -1,25 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './AddingMoney.css';
-
-const testCards = [
-  {
-    id: 1,
-    number: '4242 4242 4242 4242',
-    name: 'mohammed',
-    expiry: '12/25',
-    cvv: '123',
-    balance: 1000
-  },
-  {
-    id: 2,
-    number: '5555 5555 5555 5555',
-    name: 'ahmed',
-    expiry: '06/24',
-    cvv: '456',
-    balance: 500
-  }
-];
 
 const AddingMoney = () => {
   const [formData, setFormData] = useState({
@@ -32,41 +14,59 @@ const AddingMoney = () => {
   });
 
   const [message, setMessage] = useState('');
-  const [balance, setBalance] = useState(100);
+  const [balance, setBalance] = useState(0);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const handleAddMoney = (e) => {
+  useEffect(() => {
+    const fetchBalance = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/balance');
+        setBalance(response.data.balance);
+      } catch (error) {
+        setMessage('Failed to fetch balance');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBalance();
+  }, []);
+
+  const handleAddMoney = async (e) => {
     e.preventDefault();
     const amount = parseFloat(formData.amount);
-
+  
     if (isNaN(amount) || amount <= 0) {
       setMessage('Please enter a valid amount');
       return;
     }
-
-    const expiry = `${formData.expiryMonth}/${formData.expiryYear}`;
-
-    const matchedCard = testCards.find(card =>
-      card.number === formData.cardNumber &&
-      card.name === formData.cardName &&
-      card.expiry === expiry &&
-      card.cvv === formData.cvv
-    );
-
-    if (!matchedCard) {
-      setMessage('Invalid card details');
-      return;
+  
+    try {
+      // 1. Clean card number
+      const cleanCard = formData.cardNumber.replace(/\s/g, '');
+      
+      // 2. Format expiry month
+      const expiry = `${formData.expiryMonth.padStart(2, '0')}/${formData.expiryYear}`;
+  
+      await axios.post('http://localhost:5000/api/validate-card', { // Absolute URL
+        cardNumber: cleanCard, // Use cleaned number
+        cardName: formData.cardName,
+        expiry, // Formatted date
+        cvv: formData.cvv,
+        amount
+      });
+  
+      const response = await axios.post('http://localhost:5000/api/update-balances', {
+        cardNumber: cleanCard, // Use cleaned number
+        amount
+      });
+  
+      setBalance(response.data.newBalance);
+      navigate('/payment-success');
+    } catch (error) {
+      console.error('Transaction error:', error.response?.data); // Add this
+      setMessage(error.response?.data?.message || 'Transaction failed');
     }
-
-    if (amount > matchedCard.balance) {
-      setMessage('Insufficient funds on card');
-      return;
-    }
-
-    const newBalance = balance + amount;
-    setBalance(newBalance);
-    localStorage.setItem('userBalance', newBalance.toString());
-    navigate('/payment-success');
   };
 
   const handleChange = (e) => {
@@ -82,98 +82,102 @@ const AddingMoney = () => {
       return;
     }
 
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
     <div className="credit-card-form">
       <h2>Add Payment Method</h2>
-      {message && <div className="message">{message}</div>}
-      <form onSubmit={handleAddMoney}>
-        <div className="form-group">
-          <label>Card Number</label>
-          <input
-            type="text"
-            name="cardNumber"
-            placeholder="Enter card number"
-            value={formData.cardNumber}
-            onChange={handleChange}
-            maxLength={19}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Cardholder's Full Name</label>
-          <input
-            type="text"
-            name="cardName"
-            placeholder="Enter name here...."
-            value={formData.cardName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label>Expiry Date</label>
-            <div className="expiry-inputs">
+      {loading ? (
+        <div>Loading balance...</div>
+      ) : (
+        <>
+          <div className="current-balance">Current Balance: ${balance.toFixed(2)}</div>
+          {message && <div className="message">{message}</div>}
+          <form onSubmit={handleAddMoney}>
+            <div className="form-group">
+              <label>Card Number</label>
               <input
                 type="text"
-                name="expiryMonth"
-                placeholder="MM"
-                value={formData.expiryMonth}
+                name="cardNumber"
+                placeholder="Enter card number"
+                value={formData.cardNumber}
                 onChange={handleChange}
-                maxLength="2"
-                required
-              />
-              <span>/</span>
-              <input
-                type="text"
-                name="expiryYear"
-                placeholder="YY"
-                value={formData.expiryYear}
-                onChange={handleChange}
-                maxLength="2"
+                maxLength={19}
                 required
               />
             </div>
-          </div>
 
-          <div className="form-group">
-            <label>CVV</label>
-            <input
-              type="password"
-              name="cvv"
-              placeholder="Enter CVV"
-              value={formData.cvv}
-              onChange={handleChange}
-              maxLength="3"
-              required
-            />
-          </div>
-        </div>
+            <div className="form-group">
+              <label>Cardholder's Full Name</label>
+              <input
+                type="text"
+                name="cardName"
+                placeholder="Enter name here...."
+                value={formData.cardName}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-        <div className="form-group">
-          <label>Amount of Money to Add</label>
-          <input
-            type="number"
-            name="amount"
-            placeholder="Enter Amount"
-            value={formData.amount}
-            onChange={handleChange}
-            required
-            min="0.01"
-            step="0.01"
-          />
-        </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Expiry Date</label>
+                <div className="expiry-inputs">
+                  <input
+                    type="text"
+                    name="expiryMonth"
+                    placeholder="MM"
+                    value={formData.expiryMonth}
+                    onChange={handleChange}
+                    maxLength="2"
+                    required
+                  />
+                  <span>/</span>
+                  <input
+                    type="text"
+                    name="expiryYear"
+                    placeholder="YY"
+                    value={formData.expiryYear}
+                    onChange={handleChange}
+                    maxLength="2"
+                    required
+                  />
+                </div>
+              </div>
 
-        <button type="submit" className="submit-button">Add Amount</button>
-      </form>
+              <div className="form-group">
+                <label>CVV</label>
+                <input
+                  type="password"
+                  name="cvv"
+                  placeholder="Enter CVV"
+                  value={formData.cvv}
+                  onChange={handleChange}
+                  maxLength="3"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Amount of Money to Add</label>
+              <input
+                type="number"
+                name="amount"
+                placeholder="Enter Amount"
+                value={formData.amount}
+                onChange={handleChange}
+                required
+                min="0.01"
+                step="0.01"
+              />
+            </div>
+
+            <button type="submit" className="submit-button">Add Amount</button>
+          </form>
+        </>
+      )}
     </div>
   );
 };
