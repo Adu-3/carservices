@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../modules/User'); // adjust path based on your structure
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
