@@ -94,6 +94,31 @@ app.post('/api/pay-tolls', async (req, res) => {
   }
 });
 
+// Violations Routes
+app.get('/api/violations/:plateNumber', async (req, res) => {
+  try {
+    const violations = await Violation.find({ 
+      plateNumber: req.params.plateNumber,
+      paid: false 
+    });
+    res.json(violations);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.post('/api/violations/pay', async (req, res) => {
+  try {
+    await Violation.updateMany(
+      { _id: { $in: req.body.violationIds } },
+      { $set: { paid: true } }
+    );
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Payment failed' });
+  }
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
