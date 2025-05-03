@@ -97,7 +97,18 @@ const AddingMoney = () => {
         <div>Loading balance...</div>
       ) : (
         <>
-          <div className="current-balance">Current Balance: ${balance.toFixed(2)}</div>
+          <div className="current-balance">
+            Current Balance:  &nbsp;
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginLeft: '5px' }}>
+              <img
+                src={require('../../assets/Saudi_Riyal_Symbol-1.png')}
+                alt="SAR"
+                style={{ width: '18px', height: '18px', verticalAlign: 'middle' }}
+              />
+              {balance.toFixed(2)}
+            </span>
+          </div>
+
           {message && <div className="message">{message}</div>}
           <form onSubmit={handleAddMoney}>
             <div className="form-group">

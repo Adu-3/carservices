@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 import './UserHeader.css';
 
 const UserHeader = () => {
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      try {
+        const username = localStorage.getItem('username');
+        const response = await axios.get(`http://localhost:5000/api/user/${username}`);
+        if (response.data && typeof response.data.balance === 'number') {
+          setBalance(response.data.balance);
+        }
+      } catch (error) {
+        console.error('Failed to fetch balance:', error);
+      }
+    };
+
+    fetchBalance();
+  }, []);
+
   return (
     <header className="user-header">
       <nav className="user-nav">
@@ -36,10 +55,10 @@ const UserHeader = () => {
         <span className="balance">
           <img
             src={require('../../assets/Saudi_Riyal_Symbol-1.png')}
-            alt="Currency Symbol"
+            alt="SAR"
             className="currency-icon"
-          />
-          0.00
+          />{' '}
+          {balance.toFixed(2)}
         </span>
 
         <NavLink to="/user/profile">
