@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:global(body.buy-insurance-page) {
+  background: url(../../assets/Guest/light.png) no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insurance_box {
+  position: relative;
+  max-width: 1200px;
+  min-width: 800px;
+  min-height: 600px;
+  background: black;
+  border-radius: 60px;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  padding: 30px;
+}
+
+.insurance_logo {
+  background: linear-gradient(60deg, #0095FF, #00FFCC);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1200%;
+  align-self: center;
+}
+
+.insurance_logoName {
+  background: linear-gradient(60deg, #0095FF, #00FFCC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 600%;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  width: 90%;
+  margin-top: -1%;
+  align-self: center;
+}
+
+.insurance_logoCombined {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  align-self: center;
+  margin-bottom: 30px;
+}
+
+.insurance_form {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin-right: 5%;
+  margin-left: 3%;
+  width: 100%;
+}
+
+.insurance_planCard {
+  background: #111;
+  border: 2px solid #00FFCC;
+  border-radius: 24px;
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0px 4px 8px rgba(0, 255, 204, 0.3);
+}
+
+.insurance_planCard:hover {
+  background-color: #1a1a1a;
+  transform: scale(1.01);
+}
+
+.insurance_planName {
+  font-size: 20px;
+  color: #00ccff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.insurance_planPrice {
+  color: #00FFCC;
+}
+
+.insurance_planDesc {
+  color: #aaa;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.insurance_balanceText {
+  color: lightgreen;
+}
+
+.insurance_errorText {
+  color: #ff5555;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  align-self: center;
+}
+
+.insurance_successText {
+  color: #00FFCC;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.insurance_loading {
+  color: #ccc;
+  font-style: italic;
+  font-size: 18px;
+  align-self: center;
+}
+
+@media (max-width: 500px) {
+  .insurance_box {
+    flex-direction: column;
+    padding: 30px;
+    min-width: 320px;
+    max-width: 400px;
+    min-height: 530px;
+    max-height: 900px;
+  }
+
+  .insurance_logo {
+    font-size: 400%;
+  }
+
+  .insurance_logoName {
+    font-size: 200%;
+    width: 100%;
+  }
+}
