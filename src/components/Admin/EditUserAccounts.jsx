@@ -1,59 +1,26 @@
 import styles from './EditUserAccountsStyle.module.css';
-import { useState } from 'react';
-
-
-const initialUsers = [
-  {
-    id: 1,
-    name: 'Abdullah Alghamdi',
-    email: 'abdullah@example.com',
-    age: 30,
-    vehicles: [
-      {
-        nickname: 'Speedster',
-        color: 'Red',
-        year: 2020,
-        brand: 'Toyota',
-        model: 'Corolla',
-        registrationCountry: 'USA',
-        plateType: 'Standard',
-        ownerFullName: 'Abdullah Alghamdi',
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Sarah Smith',
-    email: 'sarah@example.com',
-    age: 28,
-    vehicles: [],
-  },
-  {
-    id: 3,
-    name: 'John Doe',
-    email: 'john@example.com',
-    age: 35,
-    vehicles: [
-      {
-        nickname: 'Family Car',
-        color: 'Blue',
-        year: 2018,
-        brand: 'Honda',
-        model: 'Civic',
-        registrationCountry: 'USA',
-        plateType: 'Standard',
-        ownerFullName: 'John Doe',
-      },
-    ],
-  },
-];
+import { useState, useEffect } from 'react';
 
 function EditUserAccounts() {
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
   const [editedUser, setEditedUser] = useState({ name: '', email: '', age: '' });
   const [editingVehiclesUserId, setEditingVehiclesUserId] = useState(null);
   const [editedVehicles, setEditedVehicles] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/users');
+        const data = await res.json();
+        setUsers(data);
+      } catch (err) {
+        console.error('Failed to fetch users:', err);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -61,13 +28,13 @@ function EditUserAccounts() {
   };
 
   const toggleEdit = (user) => {
-    setEditingUserId(user.id);
+    setEditingUserId(user._id);
     setEditedUser({ name: user.name, email: user.email, age: user.age });
   };
 
   const saveChanges = () => {
     setUsers(users.map(user => 
-      user.id === editingUserId ? { ...user, ...editedUser } : user
+      user._id === editingUserId ? { ...user, ...editedUser } : user
     ));
     alert('User information updated successfully!');
     setEditingUserId(null);
@@ -81,14 +48,14 @@ function EditUserAccounts() {
 
   const deleteUser = (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
-      setUsers(users.filter(user => user.id !== id));
+      setUsers(users.filter(user => user._id !== id));
       alert('User deleted successfully!');
     }
   };
 
   const toggleEditVehicles = (user) => {
-    setEditingVehiclesUserId(user.id);
-    setEditedVehicles(user.vehicles);
+    setEditingVehiclesUserId(user._id);
+    setEditedVehicles(user.vehicles || []);
   };
 
   const handleVehicleChange = (index, e) => {
@@ -100,7 +67,7 @@ function EditUserAccounts() {
 
   const saveVehicleChanges = () => {
     setUsers(users.map(user =>
-      user.id === editingVehiclesUserId ? { ...user, vehicles: editedVehicles } : user
+      user._id === editingVehiclesUserId ? { ...user, vehicles: editedVehicles } : user
     ));
     alert('Vehicle information updated successfully!');
     setEditingVehiclesUserId(null);
@@ -113,8 +80,7 @@ function EditUserAccounts() {
   };
 
   return (
-    <>
-      <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
+    <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
       <div className={styles.logoCombined} style={{ marginBottom: '30px' }}>
         <span className={`material-icons ${styles.logo}`} style={{ fontSize: '100px' }}>group</span>
         <p className={styles.logoName}>Manage Users</p>
@@ -122,8 +88,8 @@ function EditUserAccounts() {
 
       <div className={styles.form} style={{ width: '100%' }}>
         {users.map(user => (
-          <div key={user.id} className="mb-4 p-4 border rounded">
-            {editingUserId === user.id ? (
+          <div key={user._id} className="mb-4 p-4 border rounded">
+            {editingUserId === user._id ? (
               <>
                 <h2 className="text-white text-xl mb-4">Edit User Details</h2>
 
@@ -170,11 +136,10 @@ function EditUserAccounts() {
             ) : (
               <>
                 <h2 className="text-white text-xl mb-4">User Details</h2>
-                <p className="text-white mb-4"><strong>Name:</strong> {user.name}</p>
+                <p className="text-white mb-4"><strong>Username:</strong> {user.username}</p>
                 <p className="text-white mb-4"><strong>Email:</strong> {user.email}</p>
-                <p className="text-white mb-4"><strong>Age:</strong> {user.age}</p>
-                
-                {/* Edit Vehicles Button */}
+                <p className="text-white mb-4"><strong>Age:</strong> {user.age ? user.age : '-'}</p>
+
                 <button
                   className={`bg-green-500 text-white font-bold py-2 px-4 mt-4 rounded-full cursor-pointer flex ${styles.editButton}`}
                   onClick={() => toggleEditVehicles(user)}
@@ -190,13 +155,12 @@ function EditUserAccounts() {
                 </button>
                 <button
                   className={`bg-red-600 text-white font-bold py-2 px-4 mt-4 rounded-full cursor-pointer flex ${styles.deleteButton}`}
-                  onClick={() => deleteUser(user.id)}
+                  onClick={() => deleteUser(user._id)}
                 >
                   Delete User
                 </button>
 
-                {/* Vehicle Details */}
-                {user.vehicles.length > 0 && (
+                {user.vehicles?.length > 0 && (
                   <div className="mt-4">
                     <h3 className="text-white">Vehicles:</h3>
                     {user.vehicles.map((vehicle, index) => (
@@ -216,76 +180,23 @@ function EditUserAccounts() {
               </>
             )}
 
-            {/* Vehicle Editing Section */}
-            {editingVehiclesUserId === user.id && (
+            {editingVehiclesUserId === user._id && (
               <>
                 <h2 className="text-white text-xl mb-4">Edit Vehicles</h2>
                 {editedVehicles.map((vehicle, index) => (
                   <div key={index} className="mb-4 p-4 border rounded bg-gray-700">
-                    <label className="text-white mb-2 flex">Nickname:</label>
-                    <input
-                      type="text"
-                      name="nickname"
-                      value={vehicle.nickname}
-                      onChange={(e) => handleVehicleChange(index, e)}
-                      className="mb-2 p-2 rounded flex"
-                    />
-                    <label className="text-white mb-2 flex">Color:</label>
-                    <input
-                      type="text"
-                      name="color"
-                      value={vehicle.color}
-                      onChange={(e) => handleVehicleChange(index, e)}
-                      className="mb-2 p-2 rounded flex"
-                    />
-                    <label className="text-white mb-2 flex">Year:</label>
-                    <input
-                      type="number"
-                      name="year"
-                      value={vehicle.year}
-                      onChange={(e) => handleVehicleChange(index, e)}
-                      className="mb-2 p-2 rounded flex"
-                    />
-                    <label className="text-white mb-2 flex">Brand:</label>
-                    <input
-                      type="text"
-                      name="brand"
-                      value={vehicle.brand}
-                      onChange={(e) => handleVehicleChange(index, e)}
-                      className="mb-2 p-2 rounded flex"
-                    />
-                    <label className="text-white mb-2 flex">Model:</label>
-                    <input
-                      type="text"
-                      name="model"
-                      value={vehicle.model}
-                      onChange={(e) => handleVehicleChange(index, e)}
-                      className="mb-2 p-2 rounded flex"
-                    />
-                    <label className="text-white mb-2 flex">Registration Country:</label>
-                    <input
-                      type="text"
-                      name="registrationCountry"
-                      value={vehicle.registrationCountry}
-                      onChange={(e) => handleVehicleChange(index, e)}
-                      className="mb-2 p-2 rounded flex"
-                    />
-                    <label className="text-white mb-2 flex">Plate Type:</label>
-                    <input
-                      type="text"
-                      name="plateType"
-                      value={vehicle.plateType}
-                      onChange={(e) => handleVehicleChange(index, e)}
-                      className="mb-2 p-2 rounded flex"
-                    />
-                    <label className="text-white mb-2 flex">Owner's Full Name:</label>
-                    <input
-                      type="text"
-                      name="ownerFullName"
-                      value={vehicle.ownerFullName}
-                      onChange={(e) => handleVehicleChange(index, e)}
-                      className="mb-2 p-2 rounded flex"
-                    />
+                    {['nickname','color','year','brand','model','registrationCountry','plateType','ownerFullName'].map((field) => (
+                      <div key={field}>
+                        <label className="text-white mb-2 flex">{field[0].toUpperCase() + field.slice(1)}:</label>
+                        <input
+                          type={field === 'year' ? 'number' : 'text'}
+                          name={field}
+                          value={vehicle[field]}
+                          onChange={(e) => handleVehicleChange(index, e)}
+                          className="mb-2 p-2 rounded flex"
+                        />
+                      </div>
+                    ))}
                   </div>
                 ))}
                 <button
@@ -306,7 +217,6 @@ function EditUserAccounts() {
         ))}
       </div>
     </div>
-    </>
   );
 }
 
