@@ -15,16 +15,19 @@ function User() {
   return (
     <>
       <UserHeader />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/insurance" element={<InsurancePage />} />
-        <Route path="/cars" element={<CarRegistration />} />
-        <Route path="/tolls" element={<Tolls />} />
-        <Route path="/violations" element={<TrafficViolationsPage />} />
-        <Route path="/parking" element={<Parking />} />
-        <Route path="/wallet" element={<AddingMoney />} />
-        <Route path="/profile" element={<UserProfile />} />
-      </Routes>
+      {/* Add padding to the top to prevent content from hiding behind the fixed header */}
+      <div className="pt-20">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/insurance" element={<InsurancePage />} />
+          <Route path="/cars" element={<CarRegistration />} />
+          <Route path="/tolls" element={<Tolls />} />
+          <Route path="/violations" element={<TrafficViolationsPage />} />
+          <Route path="/parking" element={<Parking />} />
+          <Route path="/wallet" element={<AddingMoney />} />
+          <Route path="/profile" element={<UserProfile />} />
+        </Routes>
+      </div>
     </>
   );
 }
