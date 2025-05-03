@@ -6,7 +6,7 @@ const UserHeader = () => {
   return (
     <header className="user-header">
       <nav className="user-nav">
-        <NavLink to="/user" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/user" end className={({ isActive }) => (isActive ? 'active' : '')}>
           Home
         </NavLink>
         <NavLink to="/user/insurance" className={({ isActive }) => (isActive ? 'active' : '')}>

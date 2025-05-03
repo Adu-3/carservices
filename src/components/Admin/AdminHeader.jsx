@@ -6,7 +6,7 @@ const AdminHeader = () => {
   return (
     <header className="admin-header">
       <nav className="admin-nav">
-        <NavLink to="/admin" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/admin" end className={({ isActive }) => (isActive ? 'active' : '')}>
           Home
         </NavLink>
         <NavLink to="/admin/users" className={({ isActive }) => (isActive ? 'active' : '')}>
