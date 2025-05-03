@@ -92,3 +92,33 @@
     cursor: pointer;
   }
   
+  .profileInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    color: white;
+  }
+  
+  .ageInput {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-left: 0.5rem;
+  }
+  
+  .updateButton {
+    margin-left: 1rem;
+    background-color: teal;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .updateButton:hover {
+    background-color: #007777;
+  }
+  

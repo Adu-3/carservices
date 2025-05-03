@@ -72,4 +72,19 @@ router.get('/api/user/:username', async (req, res) => {
   }
 });
 
+router.post('/api/user/update-age', async (req, res) => {
+  try {
+    const { username, age } = req.body;
+    const user = await User.findOneAndUpdate({ username }, { age }, { new: true });
+
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json({ message: 'Age updated', user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to update age' });
+  }
+});
+
+
 module.exports = router;

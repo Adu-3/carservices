@@ -10,6 +10,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  age: { 
+    type: Number 
+  },
   accountType: { 
     type: String, 
     required: true, 
