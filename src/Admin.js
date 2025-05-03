@@ -13,6 +13,7 @@ import Login from './components/Guest/Login';
 import Register from './components/Guest/Register';
 import AdminHomePage from './components/Admin/AdminHomePage';
 import HomePageA from './components/Admin/HomePageA';
+import AdminProfile from './components/Admin/AdminProfile';
 
 
 function Admin() {
@@ -29,6 +30,7 @@ function Admin() {
         <Route path="/insured-vehicles" element={<><AdminHeader active="" /><InsuredVehiclesList /></>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
+        <Route path="/profile" element={<AdminProfile/>} />
 
       </Routes>
     </Router>

@@ -4,11 +4,14 @@ import shield from '../../assets/Guest/shield.png';
 import traffic from '../../assets/Guest/traffic.png';
 import tolls from '../../assets/Guest/tolls.png';
 import TopBar from './TopBar';
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
+  const navigate = useNavigate();
+
+
   return (
     <div>
-      <TopBar/>
       <div className="flex flex-col bg-black w-screen min-h-screen">
         {/* Hero Section */}
         <div
@@ -36,10 +39,14 @@ function HomePage() {
                 style={{
                   background: 'radial-gradient(at center, #0095FF 40%, #00FFCC 95%)',
                 }}
+                onClick={() => navigate('/register')}
               >
                 Create Account
               </button>
-              <button className="bg-black text-white font-bold rounded-full border-2 text-lg md:text-xl text-center py-3 px-6">
+              <button  
+                className="bg-black text-white font-bold rounded-full border-2 text-lg md:text-xl text-center py-3 px-6"
+                onClick={() => navigate('/login')}
+              >
                 Login
               </button>
             </div>

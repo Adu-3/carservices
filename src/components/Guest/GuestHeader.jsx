@@ -12,7 +12,7 @@ const GuestHeader = () => {
       </nav>
 
       <div className="guest-icons">
-        <NavLink to="/profile">
+        <NavLink to="/login">
           <span className="material-icons profile-icon" style={{ cursor: 'pointer' }}>
             person
           </span>

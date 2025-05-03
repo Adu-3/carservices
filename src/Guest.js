@@ -10,6 +10,8 @@ import HomePage from './components/Guest/Homepage';
 function Guest() {
   return (
     <Router>
+      <GuestHeader />
+
       <Routes>
         <Route path="/" element={<HomePage/>} />
       </Routes>
