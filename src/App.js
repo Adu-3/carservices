@@ -7,8 +7,8 @@ import Guest from './Guest';
 function App() {
   return (
     // <Admin/>
-    <User/>
-    //<Guest/>
+    // <User/>
+     <Guest/>
   );
 }
 
