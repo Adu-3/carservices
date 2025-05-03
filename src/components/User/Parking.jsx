@@ -1,94 +1,129 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Parking.css';
-
-const countryData = {
-  'Saudi Arabia': ['Riyadh Park Mall', 'Kingdom Centre', 'Red Sea Mall', 'Makkah Mall'],
-  'Dubai': ['Dubai Mall', 'Mall of the Emirates', 'Ibn Battuta Mall', 'City Centre Deira'],
-  'Kuwait': ['The Avenues Mall', '360 Mall', 'Marina Mall', 'Al Kout Mall'],
-  'Bahrain': ['City Centre Bahrain', 'Seef Mall', 'Dana Mall', 'Bahrain Mall']
-};
-
-const vehicleTypes = [
-  { id: 1, name: 'Small Car', rate: 10 },
-  { id: 2, name: 'Large Car/SUV', rate: 15 },
-  { id: 3, name: 'Motorcycle', rate: 5 },
-  { id: 4, name: 'Truck/Bus', rate: 25 }
-];
 
 const ParkingPayment = () => {
   const [formData, setFormData] = useState({
     country: '',
     location: '',
-    vehicleType: '',
     hours: 1,
-    total: 0
+    total: 10 // Fixed amount of 10 SAR for all vehicle types
   });
 
-  const [availableLocations, setAvailableLocations] = useState([]);
+  const [availableLocations, setAvailableLocations] = useState([]);  // Dynamically fetched locations
   const [message, setMessage] = useState('');
+  const [balance, setBalance] = useState(0); // Initially set to 0
+  const [loading, setLoading] = useState(true);
+
+  // Fetch initial data (including balance) from the API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const username = localStorage.getItem('username'); // Assuming the username is saved in local storage
+
+        // Fetch user balance
+        const userRes = await axios.get(`http://localhost:5000/api/user/${username}`);
+        setBalance(userRes.data.balance);
+      } catch (error) {
+        console.error('Failed to load data:', error.message);
+        setMessage('Failed to load user data. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Fetch locations for the selected country
+  useEffect(() => {
+    const fetchLocations = async () => {
+      if (formData.country) {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/parking-locations?country=${formData.country}`);
+          console.log("Response data: ", response.data);  // Log to check response structure
+          setAvailableLocations(response.data.parkingLocations || []);
+        } catch (error) {
+          console.error('Error fetching parking locations:', error.message);
+          setMessage('Failed to load parking locations. Please try again.');
+        }
+      }
+    };
+
+    fetchLocations();
+  }, [formData.country]);
 
   const handleCountryChange = (e) => {
     const country = e.target.value;
     setFormData({
       country,
       location: '',
-      vehicleType: '',
       hours: 1,
-      total: 0
+      total: 10 // Set to a fixed amount of 10 SAR for all
     });
-    setAvailableLocations(countryData[country] || []);
-    setMessage('');
+    console.log("Selected Country:", country);  // Log selected country
+    setMessage('');  // Clear any previous messages
   };
 
   const handleLocationChange = (e) => {
     setFormData(prev => ({
       ...prev,
       location: e.target.value,
-      vehicleType: '',
       hours: 1,
-      total: 0
-    }));
-  };
-
-  const handleVehicleChange = (e) => {
-    const vehicleId = parseInt(e.target.value);
-    const selectedVehicle = vehicleTypes.find(v => v.id === vehicleId);
-    setFormData(prev => ({
-      ...prev,
-      vehicleType: vehicleId,
-      hours: 1,
-      total: selectedVehicle ? selectedVehicle.rate : 0
+      total: 10 // Set to a fixed amount of 10 SAR for all
     }));
   };
 
   const handleHoursChange = (e) => {
     const hours = parseInt(e.target.value);
-    const selectedVehicle = vehicleTypes.find(v => v.id === parseInt(formData.vehicleType));
-    if (selectedVehicle) {
-      setFormData(prev => ({
-        ...prev,
-        hours,
-        total: hours * selectedVehicle.rate
-      }));
-    }
+    setFormData(prev => ({
+      ...prev,
+      hours,
+      total: hours * 10 // 10 SAR for every hour
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const selectedVehicle = vehicleTypes.find(v => v.id === parseInt(formData.vehicleType));
-    if (!formData.country || !formData.location || !selectedVehicle) {
+
+    if (!formData.country || !formData.location) {
       setMessage('Please fill all fields');
       return;
     }
 
-    setMessage(`Payment successful for ${formData.hours} hour(s) at ${formData.location} for ${selectedVehicle.name}`);
+    // Check if the balance is sufficient
+    if (balance >= formData.total) {
+      try {
+        const username = localStorage.getItem('username');
+        const response = await axios.post('http://localhost:5000/api/pay-parking', {
+          username,
+          amount: formData.total
+        });
+
+        // Update balance from response
+        setBalance(response.data.newBalance);
+        setMessage(`Payment successful for ${formData.hours} hour(s) at ${formData.location}. Remaining Balance: ${response.data.newBalance} SAR`);
+      } catch (error) {
+        setMessage('Payment failed. Please try again.');
+        console.error('Payment failed:', error);
+      }
+    } else {
+      setMessage('Insufficient balance.');
+    }
+
+    // Reset form fields
     setFormData(prev => ({
       ...prev,
-      vehicleType: '',
+      location: '',
       hours: 1,
-      total: 0
+      total: 10 // Fixed amount after reset
     }));
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="parking-payment-container">
@@ -98,15 +133,16 @@ const ParkingPayment = () => {
           {message}
         </div>
       )}
-      
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Country</label>
           <select value={formData.country} onChange={handleCountryChange} required>
             <option value="">Select Country</option>
-            {Object.keys(countryData).map(country => (
-              <option key={country} value={country}>{country}</option>
-            ))}
+            <option value="Saudi Arabia">Saudi Arabia</option>
+            <option value="Dubai">Dubai</option>
+            <option value="Kuwait">Kuwait</option>
+            <option value="Bahrain">Bahrain</option>
           </select>
         </div>
 
@@ -126,23 +162,6 @@ const ParkingPayment = () => {
         </div>
 
         <div className="form-group">
-          <label>Vehicle Type</label>
-          <select
-            value={formData.vehicleType}
-            onChange={handleVehicleChange}
-            disabled={!formData.location}
-            required
-          >
-            <option value="">Select Vehicle</option>
-            {vehicleTypes.map(vehicle => (
-              <option key={vehicle.id} value={vehicle.id}>
-                {vehicle.name} ({vehicle.rate} SAR/hour)
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
           <label>Hours ({formData.total} SAR total)</label>
           <input
             type="range"
@@ -150,7 +169,7 @@ const ParkingPayment = () => {
             max="24"
             value={formData.hours}
             onChange={handleHoursChange}
-            disabled={!formData.vehicleType}
+            disabled={!formData.location}
           />
           <div className="hours-display">
             {formData.hours} hour{formData.hours !== 1 ? 's' : ''}
@@ -164,7 +183,7 @@ const ParkingPayment = () => {
         <button 
           type="submit" 
           className="submit-button" 
-          disabled={!formData.vehicleType}
+          disabled={!formData.location}
         >
           Pay Now
         </button>
