@@ -5,22 +5,43 @@ import './UserHeader.css';
 
 const UserHeader = () => {
   const [balance, setBalance] = useState(0);
+  const [isTabActive, setIsTabActive] = useState(true);
+
+  const fetchBalance = async () => {
+    try {
+      const username = localStorage.getItem('username');
+      const response = await axios.get(`http://localhost:5000/api/user/${username}`);
+      if (response.data?.balance !== undefined) {
+        setBalance(response.data.balance);
+      }
+    } catch (error) {
+      console.error('Failed to fetch balance:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchBalance = async () => {
-      try {
-        const username = localStorage.getItem('username');
-        const response = await axios.get(`http://localhost:5000/api/user/${username}`);
-        if (response.data && typeof response.data.balance === 'number') {
-          setBalance(response.data.balance);
-        }
-      } catch (error) {
-        console.error('Failed to fetch balance:', error);
-      }
-    };
-
+    // Initial fetch
     fetchBalance();
-  }, []);
+
+    // Tab visibility listener (stop polling when tab is inactive)
+    const handleVisibilityChange = () => {
+      setIsTabActive(!document.hidden);
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Smart polling (every 2 seconds, but only if tab is active)
+    const pollingInterval = setInterval(() => {
+      if (isTabActive) {
+        fetchBalance();
+      }
+    }, 2000); // Check every 2 seconds
+
+    // Cleanup
+    return () => {
+      clearInterval(pollingInterval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isTabActive]); // Re-run effect when tab focus changes
 
   return (
     <header className="user-header">
