@@ -21,7 +21,8 @@ const AddingMoney = () => {
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/balance');
+        const username = localStorage.getItem('username');
+        const response = await axios.get(`http://localhost:5000/api/balance/${username}`);
         setBalance(response.data.balance);
       } catch (error) {
         setMessage('Failed to fetch balance');
@@ -56,10 +57,14 @@ const AddingMoney = () => {
         amount
       });
   
+      const username = localStorage.getItem('username');
+
       const response = await axios.post('http://localhost:5000/api/update-balances', {
-        cardNumber: cleanCard, // Use cleaned number
-        amount
+        cardNumber: cleanCard,
+        amount,
+        username // send it with request
       });
+      
   
       setBalance(response.data.newBalance);
       navigate('/payment-success');

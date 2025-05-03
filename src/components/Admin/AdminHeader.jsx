@@ -6,25 +6,25 @@ const AdminHeader = () => {
   return (
     <header className="admin-header">
       <nav className="admin-nav">
-        <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/admin" className={({ isActive }) => (isActive ? 'active' : '')}>
           Home
         </NavLink>
-        <NavLink to="/users" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/admin/users" className={({ isActive }) => (isActive ? 'active' : '')}>
           Users
         </NavLink>
-        <NavLink to="/service-providers" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/admin/service-providers" className={({ isActive }) => (isActive ? 'active' : '')}>
           Service Providers
         </NavLink>
-        <NavLink to="/forms" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/admin/forms" className={({ isActive }) => (isActive ? 'active' : '')}>
           Forms
         </NavLink>
-        <NavLink to="/send-email" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/admin/send-email" className={({ isActive }) => (isActive ? 'active' : '')}>
           Mail
         </NavLink>
       </nav>
 
       <div className="admin-icons">
-        <NavLink to="/profile">
+        <NavLink to="/admin/profile">
           <span className="material-icons profile-icon" style={{ cursor: 'pointer' }}>
             person
           </span>

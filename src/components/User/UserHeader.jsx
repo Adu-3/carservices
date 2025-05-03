@@ -6,28 +6,28 @@ const UserHeader = () => {
   return (
     <header className="user-header">
       <nav className="user-nav">
-        <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/user" className={({ isActive }) => (isActive ? 'active' : '')}>
           Home
         </NavLink>
-        <NavLink to="/insurance" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/user/insurance" className={({ isActive }) => (isActive ? 'active' : '')}>
           Insurance
         </NavLink>
-        <NavLink to="/cars" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/user/cars" className={({ isActive }) => (isActive ? 'active' : '')}>
           Cars
         </NavLink>
-        <NavLink to="/tolls" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/user/tolls" className={({ isActive }) => (isActive ? 'active' : '')}>
           Tolls
         </NavLink>
-        <NavLink to="/violations" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/user/violations" className={({ isActive }) => (isActive ? 'active' : '')}>
           Violations
         </NavLink>
-        <NavLink to="/parking" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/user/parking" className={({ isActive }) => (isActive ? 'active' : '')}>
           Parking
         </NavLink>
       </nav>
 
       <div className="user-icons">
-        <NavLink to="/wallet">
+        <NavLink to="/user/wallet">
           <span className="material-icons balance-icon" style={{ cursor: 'pointer' }}>
             credit_card
           </span>
@@ -42,7 +42,7 @@ const UserHeader = () => {
           0.00
         </span>
 
-        <NavLink to="/profile">
+        <NavLink to="/user/profile">
           <span className="material-icons profile-icon" style={{ cursor: 'pointer' }}>
             person
           </span>

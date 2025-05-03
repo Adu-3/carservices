@@ -11,7 +11,7 @@ import Register from './components/Guest/Register';
 
 function Guest() {
   return (
-    <Router>
+    <>
       <GuestHeader />
 
       <Routes>
@@ -19,7 +19,7 @@ function Guest() {
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
       </Routes>
-    </Router>
+    </>
   );
 }
 

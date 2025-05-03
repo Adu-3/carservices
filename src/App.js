@@ -1,14 +1,28 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Admin from './Admin';
 import User from './User';
 import Guest from './Guest';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   return (
-    // <Admin/>
-    // <User/>
-     <Guest/>
+    <Router>
+      <Routes>
+        <Route path="/admin/*" element={
+          <ProtectedRoute requiredRole="admin">
+            <Admin />
+          </ProtectedRoute>
+        } />
+        <Route path="/user/*" element={
+          <ProtectedRoute requiredRole="user">
+            <User />
+          </ProtectedRoute>
+        } />
+        <Route path="/*" element={<Guest />} />
+      </Routes>
+    </Router>
   );
 }
 

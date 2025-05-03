@@ -15,16 +15,17 @@ const ReceiptComponent = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [balanceRes, tollsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/balance'),
-          axios.get('http://localhost:5000/api/tolls')
+
+        const username = localStorage.getItem('username');
+        
+        const [userRes, tollsRes] = await Promise.all([
+          axios.get(`http://localhost:5000/api/user/${username}`),
+          axios.get(`http://localhost:5000/api/${username}/tolls`)
         ]);
-        
-        console.log('API Responses:', { balance: balanceRes.data, tolls: tollsRes.data });
-        
-        setBalance(balanceRes.data.balance);
+
+        setBalance(userRes.data.balance);
         setTolls(tollsRes.data);
-        setPaidTolls(balanceRes.data.paidTolls || []);
+        setPaidTolls(userRes.data.paidTolls || []);
       } catch (error) {
         console.error('Failed to load data:', {
           error: error.message,
@@ -40,9 +41,9 @@ const ReceiptComponent = () => {
 
   const handleItemClick = (tollId) => {
     if (paidTolls.includes(tollId)) return;
-    
-    setSelectedIds(prev => 
-      prev.includes(tollId) 
+
+    setSelectedIds(prev =>
+      prev.includes(tollId)
         ? prev.filter(id => id !== tollId)
         : [...prev, tollId]
     );
@@ -55,7 +56,9 @@ const ReceiptComponent = () => {
     }
 
     try {
+      const username = localStorage.getItem('username');
       const response = await axios.post('http://localhost:5000/api/pay-tolls', {
+        username,
         tollIds: selectedIds
       });
 
@@ -69,7 +72,6 @@ const ReceiptComponent = () => {
     }
   };
 
-  // Calculate total
   const totalDue = tolls
     .filter(toll => selectedIds.includes(toll._id))
     .reduce((sum, toll) => sum + toll.price, 0);
@@ -86,7 +88,7 @@ const ReceiptComponent = () => {
   return (
     <div className="receipt-container">
       <h1 className="receipt-title">Tolls List</h1>
-      
+
       {tolls.length === 0 ? (
         <div className="no-tolls-message">
           No tolls available. Please check the database connection.
@@ -95,7 +97,7 @@ const ReceiptComponent = () => {
         <>
           <div className="items-list">
             {tolls.map(toll => (
-              <div 
+              <div
                 key={toll._id}
                 className={`item-card 
                   ${selectedIds.includes(toll._id) ? 'selected' : ''} 
@@ -114,7 +116,7 @@ const ReceiptComponent = () => {
           <div className="payment-section">
             <h3>Payment</h3>
             <p>Available Amount: <strong>{balance} SAR</strong></p>
-            
+
             {selectedIds.length > 0 && (
               <div className="selected-items">
                 <p>Selected Tolls: {selectedIds.length}</p>

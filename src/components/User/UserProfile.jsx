@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styles from './AdminProfileStyle.module.css';
+import styles from './UserProfileStyle.module.css';
 
-function AdminProfile() {
+function UserProfile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -67,4 +67,4 @@ function AdminProfile() {
   );
 }
 
-export default AdminProfile;
+export default UserProfile;

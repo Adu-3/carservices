@@ -1,21 +1,18 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const User = require('../modules/User'); // Adjust the path as needed
+const jwt = require('jsonwebtoken');
+const User = require('../modules/User');
 
 const router = express.Router();
+const JWT_SECRET = process.env.JWT_SECRET || 'fallbacksecret';  // fallback if .env isn't loaded
 
-// REGISTER
+// Register
 router.post('/api/register', async (req, res) => {
   try {
     const { username, password, email } = req.body;
 
-    // Validate input
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required' });
-    }
-
-    if (password.length < 8) {
-      return res.status(400).json({ message: 'Password must be at least 8 characters' });
+    if (!username || !password || !email) {
+      return res.status(400).json({ message: 'All fields are required' });
     }
 
     const existingUser = await User.findOne({ username });
@@ -26,10 +23,9 @@ router.post('/api/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       username,
-      password: hashedPassword,
       email,
-      accountType: "user",
-      balance: 0 // Initialize balance to 0
+      password: hashedPassword,
+      accountType: username === 'admin' ? 'admin' : 'user',
     });
 
     await newUser.save();
@@ -39,53 +35,40 @@ router.post('/api/register', async (req, res) => {
   }
 });
 
-// LOGIN
+// Login
 router.post('/api/login', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // Input validation
-    if (!username || !password) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Username and password are required' 
-      });
-    }
-
-    // Find user in database
     const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(401).json({ 
-        success: false,
-        message: 'Invalid username or password' 
-      });
-    }
+    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
-    // Verify password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ 
-        success: false,
-        message: 'Invalid username or password' 
-      });
-    }
+    if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-    // Return basic user info without token
-    res.json({ 
-      success: true,
-      message: 'Login successful',
-      user: {
-        username: user.username,
-      }
+    const token = jwt.sign({ userId: user._id, username: user.username, accountType: user.accountType }, JWT_SECRET, { expiresIn: '1d' });
+
+    res.json({
+      token,
+      username: user.username,
+      accountType: user.accountType
     });
-
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ 
-      success: false,
-      message: 'Login failed',
-      error: error.message 
-    });
+    res.status(500).json({ message: 'Login failed', error: error.message });
+  }
+});
+
+// Protected route: Get user profile
+router.get('/api/user/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const user = await User.findOne({ username }).select('-password');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching profile', error: error.message });
   }
 });
 

@@ -14,7 +14,7 @@ function Login() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -24,7 +24,17 @@ function Login() {
       if (!response.ok) throw new Error(data.message || 'Login failed');
 
       localStorage.setItem('token', data.token);
-      navigate('/main');
+localStorage.setItem('username', data.username);
+localStorage.setItem('accountType', data.accountType);
+
+if (data.accountType === 'admin') {
+  navigate('/admin');
+} else if (data.accountType === 'user') {
+  navigate('/user');
+} else {
+  setError('Unknown account type.');
+}
+
     } catch (err) {
       setError(err.message);
     }
