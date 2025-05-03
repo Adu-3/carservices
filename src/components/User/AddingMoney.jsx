@@ -67,7 +67,7 @@ const AddingMoney = () => {
       
   
       setBalance(response.data.newBalance);
-      navigate('/payment-success');
+      navigate('/user/');
     } catch (error) {
       console.error('Transaction error:', error.response?.data); // Add this
       setMessage(error.response?.data?.message || 'Transaction failed');

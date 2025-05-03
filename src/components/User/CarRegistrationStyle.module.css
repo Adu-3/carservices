@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-
-body {
+:global(body.car-registration-page) {
   background: url(../../assets/Guest/light.png) no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
@@ -56,63 +55,28 @@ body {
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-    margin-right: 5%;
-    margin-left: 3%;
-  }
-
-.formInput{
-    display: flex;
-    flex-direction: row;
-    align-self: center;
-  }
-
-  .textInput{
-    resize: none;
-    padding: 12px;
-    border-radius: 12px;
-    font-size: 16px;
-    border: none;
-    width: '3000px';
-    background-color: #222;
-    color: white;
-    outline: none;
-    margin-bottom: 5%;
-    margin-right: 5%;
-  }
-
-  .inputRow {
-    display: flex;
-    gap: 1rem;
-  }
-  
-
-  .selectInput{
-    margin-bottom: 5%;
-    width: 100%;
-  }
-
-.button {
+  display: flex;
+  flex-direction: column;
   align-self: center;
-  font-weight: bold;
-  border-radius: 60px;
-  cursor: pointer;
-  padding: 10px 24px;
-  white-space: nowrap;
-  text-align: center;
-  min-width: fit-content;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  margin-right: 5%;
+  margin-left: 3%;
 }
 
-.addCarButton {
-    min-width: 150px;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
-    border-radius:  60px;
-    align-self: center;
-  }
+.formInput {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+}
 
+.inputRow {
+  display: flex;
+  gap: 1rem;
+}
+
+.selectInput {
+  margin-bottom: 5%;
+  width: 100%;
+}
 
 .formCard {
   margin-bottom: 20px;
@@ -120,35 +84,50 @@ body {
   padding-bottom: 10px;
 }
 
-/* Style for the select input */
-.selectInput select,
-.selectInput input[type="range"] {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+.inputField,
+select {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 12px;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: all 0.3s;
-  background: rgba(255, 255, 255, 0.1);
   color: white;
-  margin-right: 5%;
-}
-
-/*.selectInput select:focus {
+  padding: 10px 16px;
+  font-size: 16px;
   outline: none;
-  border-color: #00FFCC;
-  box-shadow: 0 0 0 3px rgba(0, 255, 204, 0.2);
+  transition: border-color 0.2s, background-color 0.2s;
 }
-  */
-  
 
-  
+.inputField::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
 
+.inputField:focus,
+select:focus {
+  border-color: #00FFCC;
+  background-color: rgba(255, 255, 255, 0.15);
+}
 
+.addCarButton,
+.deleteButton {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 60px;
+  padding: 10px 24px;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s;
+  align-self: center;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  min-width: 150px;
+  margin-top: 20px;
+}
 
+.addCarButton:hover,
+.deleteButton:hover {
+  background-color: #e5e5e5;
+}
 
-/* Phone Sizes */
 @media (max-width: 500px) {
   .box {
     flex-direction: column;
@@ -167,5 +146,4 @@ body {
     font-size: 200%;
     width: 100%;
   }
-
 }
