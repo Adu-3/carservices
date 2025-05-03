@@ -26,7 +26,7 @@ app.use(tollRoutes);
 app.use(formRoutes);
 app.use(vehicleRoutes);
 app.use(paymentRoutes);
-app.use(parkingRoutes);
+app.use("/api",parkingRoutes);
 app.use(insuranceRoutes);
 
 const PORT = process.env.PORT || 5000;
