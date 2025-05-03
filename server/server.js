@@ -5,8 +5,8 @@ const cors = require('cors');
 const app = express();
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
+app.use(cors());
 
 // Database
 mongoose.connect(process.env.MONGODB_URI)
@@ -19,7 +19,8 @@ const cardRoutes = require('./routes/cardRoutes');
 const tollRoutes = require('./routes/tollRoutes');
 const formRoutes = require('./routes/formRoutes');
 
-app.use(userRoutes);
+// Mount routes with base paths
+app.use(userRoutes); 
 app.use(cardRoutes);
 app.use(tollRoutes);
 app.use(formRoutes);
