@@ -37,19 +37,20 @@ router.post('/api/vehicles', async (req, res) => {
   });
   
 
-// ✅ Get all vehicles for a user
+// ✅ Get all vehicles for a user (with insurance populated)
 router.get('/api/vehicles/:username', async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const vehicles = await Vehicle.find({ user: user._id });
+    const vehicles = await Vehicle.find({ user: user._id }).populate('insurance');
     res.json(vehicles);
   } catch (error) {
-    console.error('Error fetching vehicles:', error);
+    console.error('Error fetching vehicles:', error.message);
     res.status(500).json({ message: 'Failed to fetch vehicles', error: error.message });
   }
 });
+
 
 // ✅ Delete a vehicle by ID
 router.delete('/api/vehicles/:vehicleId', async (req, res) => {
@@ -78,5 +79,19 @@ router.put('/api/vehicles/:vehicleId', async (req, res) => {
     res.status(500).json({ message: 'Failed to update vehicle', error: error.message });
   }
 });
+
+// ✅ Get one vehicle by ID, including insurance
+router.get('/api/vehicle/:vehicleId', async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findById(req.params.vehicleId).populate('insurance');
+    if (!vehicle) return res.status(404).json({ message: 'Vehicle not found' });
+    
+    res.json(vehicle);
+  } catch (error) {
+    console.error('Error fetching vehicle:', error);
+    res.status(500).json({ message: 'Failed to fetch vehicle', error: error.message });
+  }
+});
+
 
 module.exports = router;

@@ -18,7 +18,7 @@ const formRoutes = require('./routes/formRoutes');
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const parkingRoutes = require('./routes/ParkingRoute');
-const violationsRoutes = require('./routes/violationsRoutes');
+const insuranceRoutes = require('./routes/insuranceRoutes');
 
 app.use(userRoutes);
 app.use(cardRoutes);
@@ -26,8 +26,8 @@ app.use(tollRoutes);
 app.use(formRoutes);
 app.use(vehicleRoutes);
 app.use(paymentRoutes);
-app.use( parkingRoutes);
-app.use(violationsRoutes);
+app.use(parkingRoutes);
+app.use(insuranceRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

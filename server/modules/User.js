@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema({
     type: String, required: true 
   },
   balance: { 
-    type: Number, 
-    default: 100 
+    type: Number,
+    default: 0 
   },
   tolls: [{
     type: mongoose.Schema.Types.ObjectId,

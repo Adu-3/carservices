@@ -91,7 +91,7 @@ const ReceiptComponent = () => {
 
       {tolls.length === 0 ? (
         <div className="no-tolls-message">
-          No tolls available. Please check the database connection.
+          No tolls available.
         </div>
       ) : (
         <>
