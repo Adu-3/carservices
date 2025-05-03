@@ -8,15 +8,15 @@ import Parking from './components/User/Parking';
 import Tolls from './components/User/tolls';
 import InsurancePage from './components/User/buyInsurance';
 import TrafficViolationsPage from './components/User/trafficViolations';
-import UserHomePage from './components/User/UserHomePage';
 import UserProfile from './components/User/UserProfile';
+import HomePage from './components/User/HomePageU';
 
 function User() {
   return (
     <>
       <UserHeader />
       <Routes>
-        <Route path="/" element={<UserHomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/insurance" element={<InsurancePage />} />
         <Route path="/cars" element={<CarRegistration />} />
         <Route path="/tolls" element={<Tolls />} />

@@ -9,13 +9,14 @@ import AdminSendEmailPage from './components/Admin/AdminSendEmailPage';
 import InsuredVehiclesList from './components/Admin/InsuredVehiclesList';
 import AdminHomePage from './components/Admin/AdminHomePage';
 import AdminProfile from './components/Admin/AdminProfile';
+import HomePage from './components/Admin/HomePageA';
 
 function Admin() {
   return (
     <>
       <AdminHeader />
       <Routes>
-        <Route path="/" element={<AdminHomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/users" element={<EditUserAccounts />} />
         <Route path="/service-providers" element={<AdminCreateServiceProvider />} />
         <Route path="/forms" element={<AdminFormsPage />} />
