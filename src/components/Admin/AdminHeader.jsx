@@ -68,7 +68,7 @@ const AdminHeader = () => {
       {/* Icons */}
       <div className="flex items-center space-x-4">
         <NavLink to="/admin/profile">
-          <span className="material-icons text-cyan-400 hover:text-cyan-200 cursor-pointer">
+          <span className="material-icons text-cyan-400 hover:text-cyan-200 cursor-pointer bg-[linear-gradient(60deg,#0095FF,#00FFCC)] bg-clip-text text-transparent">
           admin_panel_settings
           </span>
         </NavLink>

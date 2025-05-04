@@ -175,7 +175,7 @@ const UserHeader = () => {
         </div>
 
         <NavLink to="/user/profile">
-          <span className="material-icons text-cyan-400 hover:text-cyan-200 cursor-pointer">
+          <span className="material-icons bg-[linear-gradient(60deg,#0095FF,#00FFCC)] bg-clip-text text-transparent text-cyan-400 hover:text-cyan-200 cursor-pointer">
             person
           </span>
         </NavLink>
@@ -300,7 +300,7 @@ const UserHeader = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               <div className="flex items-center space-x-2">
-                <span className="material-icons">credit_card</span>
+                <span className="material-icons bg-[linear-gradient(60deg,#0095FF,#00FFCC)] bg-clip-text text-transparent">credit_card</span>
                 <span>Wallet</span>
               </div>
             </NavLink>

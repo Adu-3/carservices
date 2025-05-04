@@ -113,13 +113,7 @@ function EditUserAccounts() {
       <div className="bg-black rounded-[60px] w-full max-w-6xl p-8 text-white">
         {/* Header with Logo */}
         <div className="flex flex-col items-center mb-8">
-          <span className="material-icons text-8xl md:text-9xl"
-                style={{ 
-                  background: 'linear-gradient(60deg, #0095FF, #00FFCC)',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
-                }}>
+          <span className="material-icons bg-[linear-gradient(60deg,#0095FF,#00FFCC)] bg-clip-text text-transparent text-8xl md:text-9xl">
             group
           </span>
           <h1 className="text-4xl md:text-6xl font-bold mt-2"
