@@ -41,6 +41,19 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Violation' 
   }],
+  // In your user schema (add this to the schema)
+parkings: [{
+  car: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Vehicle'
+  },
+  location: String,
+  startTime: Date,
+  endTime: Date,
+  amount: Number,
+  country: String
+}],
+  
   Vehicle: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" }]
 });
 

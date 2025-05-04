@@ -7,45 +7,58 @@ const ParkingPayment = () => {
     country: '',
     location: '',
     hours: 1,
-    total: 10 // Fixed amount of 10 SAR for all vehicle types
+    total: 10,
+    carId: ''
   });
 
-  const [availableLocations, setAvailableLocations] = useState([]);  // Dynamically fetched locations
+  const [availableLocations, setAvailableLocations] = useState([]);
   const [message, setMessage] = useState('');
-  const [balance, setBalance] = useState(0); // Initially set to 0
+  const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [userCars, setUserCars] = useState([]);
+  const [parkingRecords, setParkingRecords] = useState([]);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
-  // Fetch initial data (including balance) from the API
+  const username = localStorage.getItem('username');
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       try {
         setLoading(true);
-        const username = localStorage.getItem('username'); // Assuming the username is saved in local storage
 
-        // Fetch user balance
-        const userRes = await axios.get(`http://localhost:5000/api/user/${username}`);
+        // Fetch all required data in parallel
+        const [userRes, carsRes, parkingRes] = await Promise.all([
+          axios.get(`http://localhost:5000/api/user/${username}`),
+          axios.get(`http://localhost:5000/api/vehicles/${username}`),
+          axios.get(`http://localhost:5000/api/parking/${username}`)
+        ]);
+
         setBalance(userRes.data.balance);
+        setUserCars(carsRes.data || []);
+        setParkingRecords(parkingRes.data || []);
+        setShowPaymentForm(parkingRes.data.length === 0);
+        
       } catch (error) {
-        console.error('Failed to load data:', error.message);
-        setMessage('Failed to load user data. Please try again.');
+        console.error('Error loading data:', error);
+        setMessage('Error loading data. Please try again.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    fetchInitialData();
+  }, [username]);
 
-  // Fetch locations for the selected country
   useEffect(() => {
     const fetchLocations = async () => {
       if (formData.country) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/parking-locations?country=${formData.country}`);
-          console.log("Response data: ", response.data);  // Log to check response structure
+          const response = await axios.get(
+            `http://localhost:5000/api/parking-locations?country=${formData.country}`
+          );
           setAvailableLocations(response.data.parkingLocations || []);
         } catch (error) {
-          console.error('Error fetching parking locations:', error.message);
+          console.error('Error fetching locations:', error.message);
           setMessage('Failed to load parking locations. Please try again.');
         }
       }
@@ -54,140 +67,249 @@ const ParkingPayment = () => {
     fetchLocations();
   }, [formData.country]);
 
-  const handleCountryChange = (e) => {
-    const country = e.target.value;
-    setFormData({
-      country,
-      location: '',
-      hours: 1,
-      total: 10 // Set to a fixed amount of 10 SAR for all
-    });
-    console.log("Selected Country:", country);  // Log selected country
-    setMessage('');  // Clear any previous messages
-  };
-
-  const handleLocationChange = (e) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      location: e.target.value,
-      hours: 1,
-      total: 10 // Set to a fixed amount of 10 SAR for all
-    }));
-  };
-
-  const handleHoursChange = (e) => {
-    const hours = parseInt(e.target.value);
-    setFormData(prev => ({
-      ...prev,
-      hours,
-      total: hours * 10 // 10 SAR for every hour
+      [name]: value,
+      ...(name === 'hours' ? { total: value * 10 } : {})
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.country || !formData.location) {
-      setMessage('Please fill all fields');
+    if (!formData.country || !formData.location || !formData.carId) {
+      setMessage('Please fill all required fields');
       return;
     }
 
-    // Check if the balance is sufficient
-    if (balance >= formData.total) {
-      try {
-        const username = localStorage.getItem('username');
-        const response = await axios.post('http://localhost:5000/api/pay-parking', {
-          username,
-          amount: formData.total
-        });
+    try {
+      const now = new Date();
+      const endTime = new Date(now.getTime() + formData.hours * 60 * 60 * 1000);
+      const selectedCar = userCars.find(car => car._id === formData.carId);
 
-        // Update balance from response
-        setBalance(response.data.newBalance);
-        setMessage(`Payment successful for ${formData.hours} hour(s) at ${formData.location}. Remaining Balance: ${response.data.newBalance} SAR`);
-      } catch (error) {
-        setMessage('Payment failed. Please try again.');
-        console.error('Payment failed:', error);
+      if (!selectedCar) {
+        setMessage('Selected car not found');
+        return;
       }
-    } else {
-      setMessage('Insufficient balance.');
-    }
 
-    // Reset form fields
-    setFormData(prev => ({
-      ...prev,
-      location: '',
-      hours: 1,
-      total: 10 // Fixed amount after reset
-    }));
+      const response = await axios.post('http://localhost:5000/api/pay-parking', {
+        username,
+        amount: formData.total,
+        carId: formData.carId,
+        location: formData.location,
+        country: formData.country,
+        startTime: now,
+        endTime: endTime,
+        carDetails: {
+          make: selectedCar.make,
+          model: selectedCar.model,
+          plateNumber: selectedCar.plateNumber
+        }
+      });
+
+      // Update state with new parking record
+      setParkingRecords(prev => [
+        ...prev,
+        {
+          ...response.data.parking,
+          carDetails: selectedCar
+        }
+      ]);
+      
+      setBalance(response.data.newBalance);
+      setShowPaymentForm(false);
+      setMessage(`Payment successful! Remaining balance: ${response.data.newBalance} SAR`);
+      
+      // Reset form
+      setFormData({
+        country: '',
+        location: '',
+        hours: 1,
+        total: 10,
+        carId: ''
+      });
+      
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Payment failed. Please try again.');
+      console.error('Payment failed:', error);
+    }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="parking-payment-container">
+        <div className="loading">Loading parking data...</div>
+      </div>
+    );
   }
 
   return (
     <div className="parking-payment-container">
-      <h2>Pay for Parking</h2>
+      <h2>Parking Management</h2>
+      
       {message && (
         <div className={`message ${message.includes('successful') ? 'success' : 'error'}`}>
           {message}
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Country</label>
-          <select value={formData.country} onChange={handleCountryChange} required>
-            <option value="">Select Country</option>
-            <option value="Saudi Arabia">Saudi Arabia</option>
-            <option value="Dubai">Dubai</option>
-            <option value="Kuwait">Kuwait</option>
-            <option value="Bahrain">Bahrain</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Location</label>
-          <select
-            value={formData.location}
-            onChange={handleLocationChange}
-            disabled={!formData.country}
-            required
+      {/* Display active parking records */}
+      {parkingRecords.length > 0 && !showPaymentForm && (
+        <div className="parking-records">
+          
+          {parkingRecords.map((record, index) => (
+  <div key={record._id || index} className="parking-card" style={{ marginBottom: '20px' }}>
+              <div className="card-header">
+                <h4>Receipt #{index + 1}</h4>
+                <span className={`status-badge ${
+                  new Date(record.endTime) > new Date() ? 'active' : 'expired'
+                }`}>
+                  {new Date(record.endTime) > new Date() ? 'ACTIVE' : 'EXPIRED'}
+                </span>
+              </div>
+              
+              <div className="card-body">
+                <div className="detail-row">
+                  <span className="detail-label">Vehicle:</span>
+                  <span className="detail-value">
+                    {record.car?.make || record.carDetails?.make} {record.car?.model || record.carDetails?.model}
+                    ({record.car?.plateNumber || record.carDetails?.plateNumber})
+                  </span>
+                </div>
+                
+                <div className="detail-row">
+                  <span className="detail-label">Location:</span>
+                  <span className="detail-value">
+                    {record.location}, {record.country}
+                  </span>
+                </div>
+                
+                <div className="detail-row">
+                  <span className="detail-label">Duration:</span>
+                  <span className="detail-value">
+                    {record.hours || Math.round((new Date(record.endTime) - new Date(record.startTime)) / (60 * 60 * 1000))} hours
+                  </span>
+                </div>
+                
+                <div className="detail-row">
+                  <span className="detail-label">Time:</span>
+                  <span className="detail-value">
+                    {new Date(record.startTime).toLocaleString()} - {new Date(record.endTime).toLocaleString()}
+                  </span>
+                </div>
+                
+                <div className="detail-row">
+                  <span className="detail-label">Amount:</span>
+                  <span className="detail-value">{record.amount} SAR</span>
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          <button 
+            onClick={() => setShowPaymentForm(true)}
+            className="submit-button"
           >
-            <option value="">Select Location</option>
-            {availableLocations.map(location => (
-              <option key={location} value={location}>{location}</option>
-            ))}
-          </select>
+            Book New Parking
+          </button>
         </div>
+      )}
 
-        <div className="form-group">
-          <label>Hours ({formData.total} SAR total)</label>
-          <input
-            type="range"
-            min="1"
-            max="24"
-            value={formData.hours}
-            onChange={handleHoursChange}
-            disabled={!formData.location}
-          />
-          <div className="hours-display">
-            {formData.hours} hour{formData.hours !== 1 ? 's' : ''}
+      {/* Payment Form */}
+      {showPaymentForm && (
+        <form onSubmit={handleSubmit} className="payment-form">
+          <div className="form-group">
+            <label>Country</label>
+            <select
+              name="country"
+              value={formData.country}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Select Country</option>
+              <option value="Saudi Arabia">Saudi Arabia</option>
+              <option value="Dubai">Dubai</option>
+              <option value="Kuwait">Kuwait</option>
+              <option value="Bahrain">Bahrain</option>
+            </select>
           </div>
-        </div>
 
-        <div className="total-amount">
-          <h3>Total Amount: {formData.total} SAR</h3>
-        </div>
+          <div className="form-group">
+            <label>Location</label>
+            <select
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              disabled={!formData.country}
+              required
+            >
+              <option value="">Select Location</option>
+              {availableLocations.map((location, index) => (
+                <option key={index} value={location}>{location}</option>
+              ))}
+            </select>
+          </div>
 
-        <button 
-          type="submit" 
-          className="submit-button" 
-          disabled={!formData.location}
-        >
-          Pay Now
-        </button>
-      </form>
+          <div className="form-group">
+            <label>Select Your Car</label>
+            <select
+              name="carId"
+              value={formData.carId}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Select Car</option>
+              {userCars.length > 0 ? (
+                userCars.map(car => (
+                  <option key={car._id} value={car._id}>
+                    {car.make} {car.model} ({car.plateNumber})
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled>No vehicles registered</option>
+              )}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Hours ({formData.total} SAR total)</label>
+            <input
+              type="range"
+              name="hours"
+              min="1"
+              max="24"
+              value={formData.hours}
+              onChange={handleInputChange}
+              disabled={!formData.location}
+            />
+            <div className="hours-display">
+              {formData.hours} hour{formData.hours !== 1 ? 's' : ''}
+            </div>
+          </div>
+
+          <div className="form-actions">
+            <button 
+              type="submit" 
+              className="submit-button"
+              disabled={!formData.location || !formData.carId}
+            >
+              Pay Now
+            </button>
+            
+            {parkingRecords.length > 0 && (
+              <button
+                type="button"
+                className="cancel-button"
+                onClick={() => setShowPaymentForm(false)}
+              >
+                View Parking
+              </button>
+            )}
+          </div>
+        </form>
+      )}
     </div>
   );
 };
