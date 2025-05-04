@@ -96,6 +96,28 @@ router.get('/api/users', async (req, res) => {
   }
 });
 
+// Update user by ID
+router.put('/api/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedData = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
+      new: true, // return the updated document
+      runValidators: true // run schema validators
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(updatedUser);
+  } catch (err) {
+    console.error('Error updating user:', err);
+    res.status(500).json({ message: 'Server error while updating user' });
+  }
+});
+
 
 
 module.exports = router;

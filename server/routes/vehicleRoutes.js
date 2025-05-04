@@ -37,6 +37,20 @@ router.post('/api/vehicles', async (req, res) => {
   });
   
 
+
+
+  router.get('/api/vehicles', async (req, res) => {
+    try {
+      const vehicles = await Vehicle.find().populate('user'); // optionally populate user details
+      res.json(vehicles);
+    } catch (error) {
+      console.error('Error fetching all vehicles:', error);
+      res.status(500).json({ message: 'Failed to fetch vehicles', error: error.message });
+    }
+  });
+
+
+
 // ✅ Get all vehicles for a user (with insurance populated)
 router.get('/api/vehicles/:username', async (req, res) => {
   try {

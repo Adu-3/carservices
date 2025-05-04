@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 function EditUserAccounts() {
   const [users, setUsers] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
   const [editedUser, setEditedUser] = useState({ name: '', email: '', age: '' });
   const [editingVehiclesUserId, setEditingVehiclesUserId] = useState(null);
@@ -9,17 +10,31 @@ function EditUserAccounts() {
   const [activeTab, setActiveTab] = useState('users'); // 'users' or 'vehicles'
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUsersAndVehicles = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/users');
-        const data = await res.json();
-        setUsers(data);
+        const [usersRes, vehiclesRes] = await Promise.all([
+          fetch('http://localhost:5000/api/users'),
+          fetch('http://localhost:5000/api/vehicles')
+        ]);
+        const usersData = await usersRes.json();
+        const vehiclesData = await vehiclesRes.json();
+
+        const usersWithVehicles = usersData.map(user => ({
+          ...user,
+          vehicles: vehiclesData.filter(v => {
+            const vehicleUserId = typeof v.user === 'object' ? v.user._id : v.user;
+            return vehicleUserId === user._id;
+          })
+        }));
+
+        setUsers(usersWithVehicles);
+        setVehicles(vehiclesData);
       } catch (err) {
-        console.error('Failed to fetch users:', err);
+        console.error('Failed to fetch users or vehicles:', err);
       }
     };
 
-    fetchUsers();
+    fetchUsersAndVehicles();
   }, []);
 
   const handleInputChange = (e) => {
@@ -32,11 +47,25 @@ function EditUserAccounts() {
     setEditedUser({ name: user.name, email: user.email, age: user.age });
   };
 
-  const saveChanges = () => {
-    setUsers(users.map(user => 
-      user._id === editingUserId ? { ...user, ...editedUser } : user
-    ));
-    alert('User information updated successfully!');
+  const saveChanges = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/users/${editingUserId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editedUser)
+      });
+
+      if (!res.ok) throw new Error('Failed to update user');
+
+      setUsers(users.map(user =>
+        user._id === editingUserId ? { ...user, ...editedUser } : user
+      ));
+      alert('User information updated successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update user.');
+    }
+
     setEditingUserId(null);
     setEditedUser({ name: '', email: '', age: '' });
   };
@@ -46,10 +75,20 @@ function EditUserAccounts() {
     setEditedUser({ name: '', email: '', age: '' });
   };
 
-  const deleteUser = (id) => {
+  const deleteUser = async (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
-      setUsers(users.filter(user => user._id !== id));
-      alert('User deleted successfully!');
+      try {
+        const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+          method: 'DELETE'
+        });
+        if (!res.ok) throw new Error('Failed to delete user');
+
+        setUsers(users.filter(user => user._id !== id));
+        alert('User deleted successfully!');
+      } catch (err) {
+        console.error(err);
+        alert('Failed to delete user.');
+      }
     }
   };
 
@@ -66,11 +105,44 @@ function EditUserAccounts() {
     setEditedVehicles(updatedVehicles);
   };
 
-  const saveVehicleChanges = () => {
-    setUsers(users.map(user =>
-      user._id === editingVehiclesUserId ? { ...user, vehicles: editedVehicles } : user
-    ));
-    alert('Vehicle information updated successfully!');
+  const saveVehicleChanges = async () => {
+    try {
+      await Promise.all(editedVehicles.map(vehicle => {
+        if (vehicle._id) {
+          // Update existing vehicle
+          return fetch(`http://localhost:5000/api/vehicles/${vehicle._id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(vehicle)
+          });
+        } else {
+          // Create new vehicle
+          return fetch(`http://localhost:5000/api/vehicles`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...vehicle, user: editingVehiclesUserId })
+          });
+        }
+      }));
+
+      // Refresh vehicles after save
+      const vehiclesRes = await fetch('http://localhost:5000/api/vehicles');
+      const vehiclesData = await vehiclesRes.json();
+
+      const updatedUsers = users.map(user => ({
+        ...user,
+        vehicles: vehiclesData.filter(v => v.user === user._id)
+      }));
+
+      setUsers(updatedUsers);
+      setVehicles(vehiclesData);
+
+      alert('Vehicle information updated successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save vehicle changes.');
+    }
+
     setEditingVehiclesUserId(null);
     setEditedVehicles([]);
     setActiveTab('users');
@@ -104,7 +176,6 @@ function EditUserAccounts() {
     setEditedVehicles(updatedVehicles);
   };
 
-  // Find the current user being edited
   const currentUser = users.find(user => user._id === editingVehiclesUserId);
 
   return (
@@ -178,7 +249,7 @@ function EditUserAccounts() {
                           <input
                             type="text"
                             name="name"
-                            value={editedUser.name}
+                            value={editedUser.username}
                             onChange={handleInputChange}
                             className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
                           />
