@@ -4,7 +4,7 @@ function EditUserAccounts() {
   const [users, setUsers] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
-  const [editedUser, setEditedUser] = useState({ name: '', email: '', age: '' });
+  const [editedUser, setEditedUser] = useState({ username: '', email: '', age: '' });
   const [editingVehiclesUserId, setEditingVehiclesUserId] = useState(null);
   const [editedVehicles, setEditedVehicles] = useState([]);
   const [activeTab, setActiveTab] = useState('users'); // 'users' or 'vehicles'
@@ -44,7 +44,7 @@ function EditUserAccounts() {
 
   const toggleEdit = (user) => {
     setEditingUserId(user._id);
-    setEditedUser({ name: user.name, email: user.email, age: user.age });
+    setEditedUser({ name: user.username, email: user.email, age: user.age });
   };
 
   const saveChanges = async () => {
@@ -248,7 +248,7 @@ function EditUserAccounts() {
                           <label className="block text-sm font-medium mb-1">Name</label>
                           <input
                             type="text"
-                            name="name"
+                            name="username"
                             value={editedUser.username}
                             onChange={handleInputChange}
                             className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
@@ -336,7 +336,7 @@ function EditUserAccounts() {
                       </button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                      {['nickname', 'color', 'year', 'brand', 'model', 'registrationCountry', 'plateType', 'ownerFullName'].map((field) => (
+                      {['nickname', 'color', 'year', 'make', 'model', 'country', 'plateNumber', 'ownerName'].map((field) => (
                         <div key={field}>
                           <label className="block text-sm font-medium mb-1 capitalize">{field.replace(/([A-Z])/g, ' $1')}</label>
                           <input
