@@ -32,7 +32,17 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Toll'
   }],
+
+  violations: [{  
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Violation' 
+  }],
+  paidViolations: [{  
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Violation' 
+  }],
   Vehicle: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" }]
 });
+
 
 module.exports = mongoose.model('User', userSchema);
