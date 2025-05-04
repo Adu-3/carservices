@@ -22,7 +22,7 @@ export default function CarRegistrationPage() {
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/vehicles/${username}`);
+        const res = await axios.get(`http://project.dubaisi.net/api/vehicles/${username}`);
         if (res.data.length > 0) {
           setVehicles(res.data);
         }
@@ -51,7 +51,7 @@ export default function CarRegistrationPage() {
       }
 
       const payload = { ...formData, username };
-      const res = await axios.post('http://localhost:5000/api/vehicles', payload);
+      const res = await axios.post('http://project.dubaisi.net/api/vehicles', payload);
       
       // Update vehicles list with the new vehicle
       setVehicles([...vehicles, res.data.vehicle]);
@@ -77,7 +77,7 @@ export default function CarRegistrationPage() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/vehicles/${id}`);
+      await axios.delete(`http://project.dubaisi.net/api/vehicles/${id}`);
       const updatedVehicles = vehicles.filter(v => v._id !== id);
       setVehicles(updatedVehicles);
       setMessage('Car deleted successfully.');

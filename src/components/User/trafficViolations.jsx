@@ -24,7 +24,7 @@ function TrafficViolationsPage() {
       const username = localStorage.getItem('username');
       if (!username) throw new Error('User not logged in');
   
-      const res = await axios.get(`http://localhost:5000/api/user/${username}`);
+      const res = await axios.get(`http://project.dubaisi.net/api/user/${username}`);
       console.log('Balance API response:', res.data);
   
       if (res.data?.balance === undefined || res.data.balance === null) {
@@ -48,7 +48,7 @@ function TrafficViolationsPage() {
         return;
       }
 
-      const res = await axios.get(`http://localhost:5000/api/${username}/violations`);
+      const res = await axios.get(`http://project.dubaisi.net/api/${username}/violations`);
       const formattedViolations = res.data.data.map(v => ({
         _id: v._id,
         number: v.number || `VIO-${v._id.toString().slice(-6).toUpperCase()}`,
@@ -91,7 +91,7 @@ function TrafficViolationsPage() {
       setIsProcessing(true);
       try {
         const username = localStorage.getItem('username');
-        const res = await axios.post('http://localhost:5000/api/pay-violations', {
+        const res = await axios.post('http://project.dubaisi.net/api/pay-violations', {
           username,
           violationIds: selectedViolations
         });

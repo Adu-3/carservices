@@ -22,7 +22,7 @@ const AddingMoney = () => {
     const fetchBalance = async () => {
       try {
         const username = localStorage.getItem('username');
-        const response = await axios.get(`http://localhost:5000/api/balance/${username}`);
+        const response = await axios.get(`http://project.dubaisi.net/api/balance/${username}`);
         setBalance(response.data.balance);
       } catch (error) {
         setMessage('Failed to fetch balance');
@@ -49,7 +49,7 @@ const AddingMoney = () => {
       // 2. Format expiry month
       const expiry = `${formData.expiryMonth.padStart(2, '0')}/${formData.expiryYear}`;
   
-      await axios.post('http://localhost:5000/api/validate-card', { // Absolute URL
+      await axios.post('http://project.dubaisi.net/api/validate-card', { // Absolute URL
         cardNumber: cleanCard, // Use cleaned number
         cardName: formData.cardName,
         expiry, // Formatted date
@@ -59,7 +59,7 @@ const AddingMoney = () => {
   
       const username = localStorage.getItem('username');
 
-      const response = await axios.post('http://localhost:5000/api/update-balances', {
+      const response = await axios.post('http://project.dubaisi.net/api/update-balances', {
         cardNumber: cleanCard,
         amount,
         username // send it with request

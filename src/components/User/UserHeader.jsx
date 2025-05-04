@@ -10,7 +10,7 @@ const UserHeader = () => {
   const fetchBalance = async () => {
     try {
       const username = localStorage.getItem('username');
-      const response = await axios.get(`http://localhost:5000/api/user/${username}`);
+      const response = await axios.get(`http://project.dubaisi.net/api/user/${username}`);
       if (response.data?.balance !== undefined) {
         setBalance(response.data.balance);
       }

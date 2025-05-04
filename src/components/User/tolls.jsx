@@ -19,8 +19,8 @@ const ReceiptComponent = () => {
         const username = localStorage.getItem('username');
         
         const [userRes, tollsRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/user/${username}`),
-          axios.get(`http://localhost:5000/api/${username}/tolls`)
+          axios.get(`http://project.dubaisi.net/api/user/${username}`),
+          axios.get(`http://project.dubaisi.net/api/${username}/tolls`)
         ]);
 
         setBalance(userRes.data.balance);
@@ -57,7 +57,7 @@ const ReceiptComponent = () => {
 
     try {
       const username = localStorage.getItem('username');
-      const response = await axios.post('http://localhost:5000/api/pay-tolls', {
+      const response = await axios.post('http://project.dubaisi.net/api/pay-tolls', {
         username,
         tollIds: selectedIds
       });
