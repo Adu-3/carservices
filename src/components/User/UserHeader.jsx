@@ -65,8 +65,8 @@ const UserHeader = () => {
     <header className="bg-black text-white p-4 flex justify-between items-center shadow-md fixed top-0 left-0 right-0 z-50">
       {/* Logo - Now clickable to return home */}
       <NavLink to="/user" className="flex items-center space-x-2">
-        <span className="material-icons bg-gradient-to-br from-blue-500 to-cyan-400 bg-clip-text text-transparent">directions_car</span>
-        <h1 className="font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent text-xl">Car Service</h1>
+        <span className="material-icons bg-[linear-gradient(60deg,#0095FF,#00FFCC)] bg-clip-text text-transparent">directions_car</span>
+        <h1 className="font-bold bg-[linear-gradient(60deg,#0095FF,#00FFCC)] bg-clip-text text-transparent text-xl">Car Service</h1>
       </NavLink>
       
       {/* Navigation Links - Desktop */}

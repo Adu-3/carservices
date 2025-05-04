@@ -1,4 +1,3 @@
-import styles from './EditUserAccountsStyle.module.css';
 import { useState, useEffect } from 'react';
 
 function EditUserAccounts() {
@@ -7,6 +6,7 @@ function EditUserAccounts() {
   const [editedUser, setEditedUser] = useState({ name: '', email: '', age: '' });
   const [editingVehiclesUserId, setEditingVehiclesUserId] = useState(null);
   const [editedVehicles, setEditedVehicles] = useState([]);
+  const [activeTab, setActiveTab] = useState('users'); // 'users' or 'vehicles'
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -56,6 +56,7 @@ function EditUserAccounts() {
   const toggleEditVehicles = (user) => {
     setEditingVehiclesUserId(user._id);
     setEditedVehicles(user.vehicles || []);
+    setActiveTab('vehicles');
   };
 
   const handleVehicleChange = (index, e) => {
@@ -72,149 +73,247 @@ function EditUserAccounts() {
     alert('Vehicle information updated successfully!');
     setEditingVehiclesUserId(null);
     setEditedVehicles([]);
+    setActiveTab('users');
   };
 
   const cancelVehicleEdit = () => {
     setEditingVehiclesUserId(null);
     setEditedVehicles([]);
+    setActiveTab('users');
   };
 
+  const addNewVehicle = () => {
+    setEditedVehicles([
+      ...editedVehicles,
+      {
+        nickname: '',
+        color: '',
+        year: '',
+        brand: '',
+        model: '',
+        registrationCountry: '',
+        plateType: '',
+        ownerFullName: ''
+      }
+    ]);
+  };
+
+  const removeVehicle = (index) => {
+    const updatedVehicles = [...editedVehicles];
+    updatedVehicles.splice(index, 1);
+    setEditedVehicles(updatedVehicles);
+  };
+
+  // Find the current user being edited
+  const currentUser = users.find(user => user._id === editingVehiclesUserId);
+
   return (
-    <div className={`container ${styles.box}`} style={{ flexDirection: 'column', padding: '30px' }}>
-      <div className={styles.logoCombined} style={{ marginBottom: '30px' }}>
-        <span className={`material-icons ${styles.logo}`} style={{ fontSize: '100px' }}>group</span>
-        <p className={styles.logoName}>Manage Users</p>
-      </div>
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-cover bg-center bg-no-repeat mt-15" 
+         style={{ backgroundImage: "url(../../assets/Guest/light.png)" }}>
+      <div className="bg-black rounded-[60px] w-full max-w-6xl p-8 text-white">
+        {/* Header with Logo */}
+        <div className="flex flex-col items-center mb-8">
+          <span className="material-icons text-8xl md:text-9xl"
+                style={{ 
+                  background: 'linear-gradient(60deg, #0095FF, #00FFCC)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}>
+            group
+          </span>
+          <h1 className="text-4xl md:text-6xl font-bold mt-2"
+              style={{ 
+                background: 'linear-gradient(60deg, #0095FF, #00FFCC)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}>
+            Manage Users
+          </h1>
+        </div>
 
-      <div className={styles.form} style={{ width: '100%' }}>
-        {users.map(user => (
-          <div key={user._id} className="mb-4 p-4 border rounded">
-            {editingUserId === user._id ? (
-              <>
-                <h2 className="text-white text-xl mb-4">Edit User Details</h2>
+        {/* Main Content */}
+        {activeTab === 'users' && (
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-black">
+              <thead>
+                <tr className="border-b border-gray-700">
+                  <th className="py-3 px-4 text-left">Username</th>
+                  <th className="py-3 px-4 text-left">Email</th>
+                  <th className="py-3 px-4 text-left">Age</th>
+                  <th className="py-3 px-4 text-left">Vehicles</th>
+                  <th className="py-3 px-4 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map(user => (
+                  <tr key={user._id} className="border-b border-gray-800 hover:bg-gray-900">
+                    <td className="py-3 px-4">{user.username}</td>
+                    <td className="py-3 px-4">{user.email}</td>
+                    <td className="py-3 px-4">{user.age || '-'}</td>
+                    <td className="py-3 px-4">{user.vehicles?.length || 0}</td>
+                    <td className="py-3 px-4 flex space-x-2">
+                      <button 
+                        onClick={() => toggleEdit(user)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full text-sm"
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={() => toggleEditVehicles(user)}
+                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-full text-sm"
+                      >
+                        Vehicles
+                      </button>
+                      <button 
+                        onClick={() => deleteUser(user._id)}
+                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-full text-sm"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
 
-                <label className="text-white mb-2">Name:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={editedUser.name}
-                  onChange={handleInputChange}
-                  className="mb-4 p-2 rounded"
-                />
+                {editingUserId && (
+                  <tr className="bg-gray-800">
+                    <td colSpan="5" className="p-4">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Name</label>
+                          <input
+                            type="text"
+                            name="name"
+                            value={editedUser.name}
+                            onChange={handleInputChange}
+                            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Email</label>
+                          <input
+                            type="email"
+                            name="email"
+                            value={editedUser.email}
+                            onChange={handleInputChange}
+                            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Age</label>
+                          <input
+                            type="number"
+                            name="age"
+                            value={editedUser.age}
+                            onChange={handleInputChange}
+                            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-end mt-4 space-x-3">
+                        <button
+                          onClick={cancelEdit}
+                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={saveChanges}
+                          className="bg-white hover:bg-gray-200 text-black px-4 py-2 rounded-full shadow"
+                        >
+                          Save Changes
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-                <label className="text-white mb-2">Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={editedUser.email}
-                  onChange={handleInputChange}
-                  className="mb-4 p-2 rounded"
-                />
+        {/* Vehicles Edit Form */}
+        {activeTab === 'vehicles' && currentUser && (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">
+                Editing Vehicles for <span className="text-blue-400">{currentUser.username}</span>
+              </h2>
+              <button 
+                onClick={() => setActiveTab('users')}
+                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-full"
+              >
+                Back to Users
+              </button>
+            </div>
 
-                <label className="text-white mb-2">Age:</label>
-                <input
-                  type="number"
-                  name="age"
-                  value={editedUser.age}
-                  onChange={handleInputChange}
-                  className="mb-4 p-2 rounded"
-                />
-
-                <button
-                  className={`bg-white text-black font-bold py-2 px-4 mt-4 rounded-full cursor-pointer ${styles.saveButton}`}
-                  onClick={saveChanges}
+            {editedVehicles.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-xl text-gray-400 mb-4">No vehicles found for this user.</p>
+                <button 
+                  onClick={addNewVehicle}
+                  className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full"
                 >
-                  Save Changes
+                  Add New Vehicle
                 </button>
-                <button
-                  className={`bg-red-500 text-white font-bold py-2 px-4 mt-4 rounded-full cursor-pointer ${styles.cancelButton}`}
-                  onClick={cancelEdit}
-                >
-                  Cancel
-                </button>
-              </>
+              </div>
             ) : (
               <>
-                <h2 className="text-white text-xl mb-4">User Details</h2>
-                <p className="text-white mb-4"><strong>Username:</strong> {user.username}</p>
-                <p className="text-white mb-4"><strong>Email:</strong> {user.email}</p>
-                <p className="text-white mb-4"><strong>Age:</strong> {user.age ? user.age : '-'}</p>
-
-                <button
-                  className={`bg-green-500 text-white font-bold py-2 px-4 mt-4 rounded-full cursor-pointer flex ${styles.editButton}`}
-                  onClick={() => toggleEditVehicles(user)}
-                >
-                  Edit Vehicles
-                </button>
-
-                <button
-                  className={`bg-blue-500 text-white font-bold py-2 px-4 mt-4 rounded-full cursor-pointer flex ${styles.editButton}`}
-                  onClick={() => toggleEdit(user)}
-                >
-                  Edit User Information
-                </button>
-                <button
-                  className={`bg-red-600 text-white font-bold py-2 px-4 mt-4 rounded-full cursor-pointer flex ${styles.deleteButton}`}
-                  onClick={() => deleteUser(user._id)}
-                >
-                  Delete User
-                </button>
-
-                {user.vehicles?.length > 0 && (
-                  <div className="mt-4">
-                    <h3 className="text-white">Vehicles:</h3>
-                    {user.vehicles.map((vehicle, index) => (
-                      <div key={index} className="mb-2 p-2 border rounded bg-gray-800 flex">
-                        <p><strong>Nickname:</strong> {vehicle.nickname}</p>
-                        <p><strong>Color:</strong> {vehicle.color}</p>
-                        <p><strong>Year:</strong> {vehicle.year}</p>
-                        <p><strong>Brand:</strong> {vehicle.brand}</p>
-                        <p><strong>Model:</strong> {vehicle.model}</p>
-                        <p><strong>Registration Country:</strong> {vehicle.registrationCountry}</p>
-                        <p><strong>Plate Type:</strong> {vehicle.plateType}</p>
-                        <p><strong>Owner's Full Name:</strong> {vehicle.ownerFullName}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
-
-            {editingVehiclesUserId === user._id && (
-              <>
-                <h2 className="text-white text-xl mb-4">Edit Vehicles</h2>
                 {editedVehicles.map((vehicle, index) => (
-                  <div key={index} className="mb-4 p-4 border rounded bg-gray-700">
-                    {['nickname','color','year','brand','model','registrationCountry','plateType','ownerFullName'].map((field) => (
-                      <div key={field}>
-                        <label className="text-white mb-2 flex">{field[0].toUpperCase() + field.slice(1)}:</label>
-                        <input
-                          type={field === 'year' ? 'number' : 'text'}
-                          name={field}
-                          value={vehicle[field]}
-                          onChange={(e) => handleVehicleChange(index, e)}
-                          className="mb-2 p-2 rounded flex"
-                        />
-                      </div>
-                    ))}
+                  <div key={index} className="mb-6 p-6 bg-gray-800 rounded-lg border border-gray-700">
+                    <div className="flex justify-between mb-4">
+                      <h3 className="text-xl font-bold">Vehicle #{index + 1}</h3>
+                      <button 
+                        onClick={() => removeVehicle(index)}
+                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-full text-sm"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {['nickname', 'color', 'year', 'brand', 'model', 'registrationCountry', 'plateType', 'ownerFullName'].map((field) => (
+                        <div key={field}>
+                          <label className="block text-sm font-medium mb-1 capitalize">{field.replace(/([A-Z])/g, ' $1')}</label>
+                          <input
+                            type={field === 'year' ? 'number' : 'text'}
+                            name={field}
+                            value={vehicle[field] || ''}
+                            onChange={(e) => handleVehicleChange(index, e)}
+                            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600"
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
-                <button
-                  className={`bg-white text-black font-bold py-2 px-4 mt-4 rounded-full cursor-pointer flex ${styles.saveButton}`}
-                  onClick={saveVehicleChanges}
-                >
-                  Save Vehicle Changes
-                </button>
-                <button
-                  className={`bg-red-500 text-white font-bold py-2 px-4 mt-4 rounded-full cursor-pointer flex ${styles.cancelButton}`}
-                  onClick={cancelVehicleEdit}
-                >
-                  Cancel Vehicle Edit
-                </button>
+
+                <div className="flex justify-between mt-6">
+                  <button 
+                    onClick={addNewVehicle}
+                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full"
+                  >
+                    Add Another Vehicle
+                  </button>
+                  
+                  <div className="flex space-x-3">
+                    <button 
+                      onClick={cancelVehicleEdit}
+                      className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      onClick={saveVehicleChanges}
+                      className="bg-white hover:bg-gray-200 text-black px-6 py-2 rounded-full shadow"
+                    >
+                      Save All Changes
+                    </button>
+                  </div>
+                </div>
               </>
             )}
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
