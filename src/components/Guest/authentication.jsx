@@ -15,7 +15,7 @@ function AuthenticationPage({ onLogin }) {
     const handleLogin = async () => {
         try {
             const credentials = { username, password };
-            const response = await axios.post('http://project.dubaisi.net/api/login', credentials);
+            const response = await axios.post('https://project.dubaisi.net/api/login', credentials);
             
             // Save the token to localStorage and update App.js state via onLogin
             localStorage.setItem('authToken', response.data.token);
