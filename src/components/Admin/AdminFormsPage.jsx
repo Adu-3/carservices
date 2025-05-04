@@ -12,7 +12,7 @@ function AdminFormsPage() {
     // Fetch forms from the backend
     const fetchForms = async () => {
       try {
-        const response = await axios.get('http://project.dubaisi.net/api/forms');
+        const response = await axios.get('https://project.dubaisi.net/api/forms');
         setForms(response.data);  // Store the fetched forms in state
       } catch (err) {
         setError('Failed to fetch forms');

@@ -15,7 +15,7 @@ function AdminProfile() {
     const fetchUser = async () => {
       try {
         const username = localStorage.getItem('username');
-        const response = await axios.get(`http://project.dubaisi.net/api/user/${username}`);
+        const response = await axios.get(`https://project.dubaisi.net/api/user/${username}`);
         setUser(response.data);
         setAgeInput(response.data.age || '');
       } catch (err) {
@@ -37,7 +37,7 @@ function AdminProfile() {
   const handleAgeUpdate = async () => {
     try {
       const username = localStorage.getItem('username');
-      await axios.post(`http://project.dubaisi.net/api/user/update-age`, {
+      await axios.post(`https://project.dubaisi.net/api/user/update-age`, {
         username,
         age: ageInput,
       });

@@ -13,8 +13,8 @@ function EditUserAccounts() {
     const fetchUsersAndVehicles = async () => {
       try {
         const [usersRes, vehiclesRes] = await Promise.all([
-          fetch('http://project.dubaisi.net/api/users'),
-          fetch('http://project.dubaisi.net/api/vehicles')
+          fetch('https://project.dubaisi.net/api/users'),
+          fetch('https://project.dubaisi.net/api/vehicles')
         ]);
         const usersData = await usersRes.json();
         const vehiclesData = await vehiclesRes.json();
@@ -49,7 +49,7 @@ function EditUserAccounts() {
 
   const saveChanges = async () => {
     try {
-      const res = await fetch(`http://project.dubaisi.net/api/users/${editingUserId}`, {
+      const res = await fetch(`https://project.dubaisi.net/api/users/${editingUserId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editedUser)
@@ -78,7 +78,7 @@ function EditUserAccounts() {
   const deleteUser = async (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        const res = await fetch(`http://project.dubaisi.net/api/users/${id}`, {
+        const res = await fetch(`https://project.dubaisi.net/api/users/${id}`, {
           method: 'DELETE'
         });
         if (!res.ok) throw new Error('Failed to delete user');
@@ -110,14 +110,14 @@ function EditUserAccounts() {
       await Promise.all(editedVehicles.map(vehicle => {
         if (vehicle._id) {
           // Update existing vehicle
-          return fetch(`http://project.dubaisi.net/api/vehicles/${vehicle._id}`, {
+          return fetch(`https://project.dubaisi.net/api/vehicles/${vehicle._id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(vehicle)
           });
         } else {
           // Create new vehicle
-          return fetch(`http://project.dubaisi.net/api/vehicles`, {
+          return fetch(`https://project.dubaisi.net/api/vehicles`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...vehicle, user: editingVehiclesUserId })
@@ -126,7 +126,7 @@ function EditUserAccounts() {
       }));
 
       // Refresh vehicles after save
-      const vehiclesRes = await fetch('http://project.dubaisi.net/api/vehicles');
+      const vehiclesRes = await fetch('https://project.dubaisi.net/api/vehicles');
       const vehiclesData = await vehiclesRes.json();
 
       const updatedUsers = users.map(user => ({

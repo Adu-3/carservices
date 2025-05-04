@@ -32,7 +32,7 @@ function BuyInsurance() {
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
-        const res = await axios.get(`http://project.dubaisi.net/api/vehicles/${username}`);
+        const res = await axios.get(`https://project.dubaisi.net/api/vehicles/${username}`);
         const vehicles = res.data;
   
         if (!vehicles || vehicles.length === 0) {
@@ -56,8 +56,8 @@ function BuyInsurance() {
           // Expired → delete insurance and unlink from vehicle (safely)
           try {
             if (v.insurance && v.insurance._id) {
-              await axios.delete(`http://project.dubaisi.net/api/insurances/${v.insurance._id}`);
-              await axios.put(`http://project.dubaisi.net/api/vehicles/${v._id}`, {
+              await axios.delete(`https://project.dubaisi.net/api/insurances/${v.insurance._id}`);
+              await axios.put(`https://project.dubaisi.net/api/vehicles/${v._id}`, {
                 insurance: null
               });
             }
@@ -98,7 +98,7 @@ function BuyInsurance() {
     }
 
     try {
-      const res = await axios.post('http://project.dubaisi.net/api/insurances', {
+      const res = await axios.post('https://project.dubaisi.net/api/insurances', {
         insuranceType: selectedPlan,
         coverageLocation: country,
         period,
@@ -106,7 +106,7 @@ function BuyInsurance() {
       });
       
       // ✅ fetch updated balance from backend
-      const userRes = await axios.get(`http://project.dubaisi.net/api/user/${username}`);
+      const userRes = await axios.get(`https://project.dubaisi.net/api/user/${username}`);
       if (userRes.data && typeof userRes.data.balance === 'number') {
         localStorage.setItem('balance', userRes.data.balance);
       }

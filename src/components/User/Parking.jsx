@@ -28,9 +28,9 @@ const ParkingPayment = () => {
 
         // Fetch all required data in parallel
         const [userRes, carsRes, parkingRes] = await Promise.all([
-          axios.get(`http://project.dubaisi.net/api/user/${username}`),
-          axios.get(`http://project.dubaisi.net/api/vehicles/${username}`),
-          axios.get(`http://project.dubaisi.net/api/parking/${username}`)
+          axios.get(`https://project.dubaisi.net/api/user/${username}`),
+          axios.get(`https://project.dubaisi.net/api/vehicles/${username}`),
+          axios.get(`https://project.dubaisi.net/api/parking/${username}`)
         ]);
 
         setBalance(userRes.data.balance);
@@ -54,7 +54,7 @@ const ParkingPayment = () => {
       if (formData.country) {
         try {
           const response = await axios.get(
-            `http://project.dubaisi.net/api/parking-locations?country=${formData.country}`
+            `https://project.dubaisi.net/api/parking-locations?country=${formData.country}`
           );
           setAvailableLocations(response.data.parkingLocations || []);
         } catch (error) {
@@ -94,7 +94,7 @@ const ParkingPayment = () => {
         return;
       }
 
-      const response = await axios.post('http://project.dubaisi.net/api/pay-parking', {
+      const response = await axios.post('https://project.dubaisi.net/api/pay-parking', {
         username,
         amount: formData.total,
         carId: formData.carId,
